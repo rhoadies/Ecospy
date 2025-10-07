@@ -115,6 +115,7 @@ export class GameManager {
       // Salle 4: Mix énergétique (>=60%)
       // On accepte plusieurs paliers + raccourci facile '1'
       4: ['60', '60%', '65', '65%', '70', '70%', '1'],
+      // Accept any renewable percentage >= 60 (client sends number as string)
     };
   }
 

@@ -11,6 +11,7 @@ export default function Room4({ onSubmit }) {
     gaz: 0,
     charbon: 0
   })
+  const budgetLimit = 70 // budget cap (e.g., €/MWh as an abstract score)
 
   const energySources = {
     solaire: {
@@ -73,6 +74,14 @@ export default function Room4({ onSubmit }) {
     return total.toFixed(3)
   }
 
+  const getAverageCost = () => {
+    let cost = 0
+    Object.entries(energyMix).forEach(([source, percentage]) => {
+      cost += (percentage / 100) * energySources[source].cost
+    })
+    return cost.toFixed(1)
+  }
+
   const getRenewablePercentage = () => {
     return energyMix.solaire + energyMix.eolien + energyMix.hydraulique
   }
@@ -87,6 +96,10 @@ export default function Room4({ onSubmit }) {
   const isValid = totalPercentage === 100
   const renewablePercentage = getRenewablePercentage()
   const co2Total = getTotalCO2()
+  const avgCost = getAverageCost()
+  const meetsBudget = parseFloat(avgCost) <= budgetLimit
+  const meetsRenewables = renewablePercentage >= 60
+  const canSubmit = isValid && meetsRenewables && meetsBudget
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -134,7 +147,7 @@ export default function Room4({ onSubmit }) {
             <div className="text-center">
               <p className="text-gray-400 text-sm mb-1">Énergies renouvelables</p>
               <p className={`text-3xl font-bold ${
-                renewablePercentage >= 60 ? 'text-primary' : 'text-yellow-500'
+                meetsRenewables ? 'text-primary' : 'text-yellow-500'
               }`}>
                 {renewablePercentage}%
               </p>
@@ -150,6 +163,18 @@ export default function Room4({ onSubmit }) {
                 {co2Total} kg
               </p>
               <p className="text-xs text-gray-500">par kWh produit</p>
+            </div>
+          </div>
+
+          <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+            <div className="text-center">
+              <p className="text-gray-400 text-sm mb-1">Coût moyen (budget)</p>
+              <p className={`text-3xl font-bold ${
+                meetsBudget ? 'text-primary' : 'text-red-500'
+              }`}>
+                {avgCost}
+              </p>
+              <p className="text-xs text-gray-500">Limite ≤ {budgetLimit}</p>
             </div>
           </div>
         </div>
@@ -227,33 +252,34 @@ export default function Room4({ onSubmit }) {
             className="mb-6"
           >
             <div className={`rounded-lg p-6 border-2 ${
-              renewablePercentage >= 60 ? 'bg-primary/10 border-primary' : 'bg-yellow-500/10 border-yellow-500'
+              canSubmit ? 'bg-primary/10 border-primary' : 'bg-yellow-500/10 border-yellow-500'
             }`}>
               <div className="text-center mb-4">
                 <p className="text-gray-400 mb-2">Code final (% d'énergies renouvelables) :</p>
                 <div className={`text-5xl font-bold ${
-                  renewablePercentage >= 60 ? 'text-primary' : 'text-yellow-500'
+                  meetsRenewables ? 'text-primary' : 'text-yellow-500'
                 }`}>
                   {renewablePercentage}%
                 </div>
               </div>
 
-              {renewablePercentage >= 60 ? (
+              {canSubmit ? (
                 <div className="text-center mb-4">
                   <p className="text-primary font-semibold">
-                    ✅ Excellent ! Vous avez créé un mix énergétique durable !
+                    ✅ Mix valide : contraintes de production, de budget et de renouvelables respectées.
                   </p>
                 </div>
               ) : (
                 <div className="text-center mb-4">
-                  <p className="text-yellow-500">
-                    ⚠️ Essayez d'atteindre au moins 60% de renouvelables pour une mission réussie
-                  </p>
+                  <ul className="text-sm text-yellow-400 space-y-1">
+                    {!meetsRenewables && <li>• Atteignez au moins 60% de renouvelables</li>}
+                    {!meetsBudget && <li>• Respectez le budget (coût ≤ {budgetLimit})</li>}
+                  </ul>
                 </div>
               )}
 
               <form onSubmit={handleSubmit}>
-                <button type="submit" className="w-full btn-primary py-4 text-lg">
+                <button type="submit" disabled={!canSubmit} className="w-full btn-primary py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed">
                   🏆 Terminer la mission
                 </button>
               </form>
