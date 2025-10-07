@@ -106,8 +106,8 @@ export default function Room2({ onSubmit }) {
           </div>
         </div>
 
-        {/* Memory Grid: 4 x 4 (always 4 columns, 4 rows) */}
-        <div className="grid grid-cols-4 gap-3 mb-8">
+        {/* Memory Grid: 4 x 4 (always 4 columns, 4 rows) - smaller cards */}
+        <div className="grid grid-cols-4 gap-2 mb-6 max-w-[700px] mx-auto">
           {cards.map((card, index) => {
             const isFlipped = flipped.includes(index) || matched.includes(index)
             const isMatched = matched.includes(index)
@@ -131,32 +131,32 @@ export default function Room2({ onSubmit }) {
                     transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
                   }}
                 >
-                  {/* Face arrière */}
+                  {/* Face arrière (back) - color by type to distinguish time vs object */}
                   <div
-                    className={`absolute inset-0 rounded-lg flex items-center justify-center text-4xl ${
-                      isMatched ? 'bg-primary' : 'bg-blue-600'
+                    className={`absolute inset-0 rounded-lg flex items-center justify-center text-3xl ${
+                      isMatched
+                        ? 'bg-primary'
+                        : card.type === 'time'
+                        ? 'bg-yellow-600'
+                        : 'bg-blue-600'
                     } backface-hidden`}
                     style={{ backfaceVisibility: 'hidden' }}
                   >
                     🌊
                   </div>
 
-                  {/* Face avant */}
+                  {/* Face avant (front) - neutral style */}
                   <div
-                    className={`absolute inset-0 rounded-lg p-2 flex flex-col items-center justify-center text-center ${
-                      isMatched
-                        ? 'bg-primary/20 border-2 border-primary'
-                        : card.type === 'time'
-                        ? 'bg-yellow-800/60 border border-yellow-600 text-yellow-100'
-                        : 'bg-gray-800 text-white'
+                    className={`absolute inset-0 rounded-lg p-1.5 flex flex-col items-center justify-center text-center ${
+                      isMatched ? 'bg-primary/20 border-2 border-primary' : 'bg-gray-800 text-white'
                     }`}
                     style={{
                       backfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)'
                     }}
                   >
-                    <div className="text-3xl mb-1">{card.icon}</div>
-                    <div className="text-xs font-semibold leading-tight">
+                    <div className="text-2xl mb-0.5">{card.icon}</div>
+                    <div className="text-[10px] md:text-xs font-semibold leading-tight">
                       {card.value}
                     </div>
                   </div>
