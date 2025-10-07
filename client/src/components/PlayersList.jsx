@@ -10,17 +10,17 @@ export default function PlayersList() {
     <motion.div
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className="fixed left-4 top-24 bg-gray-900/95 backdrop-blur-sm rounded-xl border border-gray-700 p-4 z-30 min-w-[200px] shadow-2xl"
+      className="fixed left-2 top-20 bg-gray-900/95 backdrop-blur-sm rounded-lg border border-gray-700 p-3 z-30 min-w-[160px] max-w-[220px] shadow-xl"
     >
-      <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-700">
-        <span className="text-2xl">👥</span>
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-700">
+        <span className="text-xl">👥</span>
         <div>
-          <h3 className="font-bold text-white">Équipe</h3>
+          <h3 className="font-bold text-white text-sm">Équipe</h3>
           <p className="text-xs text-gray-400">{room.players.length} joueur(s)</p>
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {room.players.map((player, index) => {
           const isMe = player.name === playerName
           // Retrouver l'entrée peer par nom (côté écouteur on n'a pas forcement le socketId)
@@ -32,14 +32,14 @@ export default function PlayersList() {
               key={player.id}
               initial={{ x: -50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: index * 0.1 }}
-              className={`flex items-center gap-3 p-2 rounded-lg transition-all ${
+              transition={{ delay: index * 0.05 }}
+              className={`flex items-center gap-2.5 p-2 rounded-lg transition-all ${
                 isPlayerSpeaking 
                   ? 'bg-primary/20 ring-2 ring-primary/50' 
                   : 'bg-gray-800/50'
               }`}
             >
-              <div className={`relative w-10 h-10 rounded-full flex items-center justify-center text-xl transition-all ${
+              <div className={`relative w-8 h-8 rounded-full flex items-center justify-center text-lg transition-all ${
                 isPlayerSpeaking 
                   ? 'bg-primary scale-110 ring-4 ring-primary/30' 
                   : isInVoice
@@ -47,7 +47,7 @@ export default function PlayersList() {
                   : 'bg-gray-700'
               }`}>
                 {player.isHost && (
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-500 rounded-full flex items-center justify-center text-xs">
+                  <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-yellow-500 rounded-full flex items-center justify-center text-[10px]">
                     👑
                   </div>
                 )}
@@ -56,19 +56,20 @@ export default function PlayersList() {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="font-semibold text-sm truncate text-white">
+                  <p className="font-semibold text-sm truncate text-white leading-5">
                     {player.name}
                     {isMe && <span className="text-primary ml-1">(Vous)</span>}
                   </p>
                   {player.isHost && (
-                    <span className="text-xs text-yellow-500">Hôte</span>
+                    <span className="text-[10px] text-yellow-500">Hôte</span>
                   )}
                 </div>
                 
                 {/* Voice status removed */}
               </div>
 
-              {/* Voice indicators removed */}
+              {/* Voice indicators removed */
+              }
             </motion.div>
           )
         })}
