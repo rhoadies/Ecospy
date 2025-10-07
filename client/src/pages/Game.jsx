@@ -22,10 +22,12 @@ export default function Game() {
     setCurrentRoom, 
     gameStarted, 
     setGameResult,
-    playerName 
+    playerName,
+    addMessage
   } = useGame()
 
   const [showChat, setShowChat] = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
 
   useEffect(() => {
     if (!room || !roomCode || !gameStarted) {
@@ -55,12 +57,24 @@ export default function Game() {
       }, 2000)
     })
 
+    // Messages texte – capter même si le panneau est fermé
+    socket.on('new-message', (message) => {
+      addMessage(message)
+      if (!showChat && message.playerName !== playerName) {
+        setUnreadCount((c) => c + 1)
+        toast((t) => (
+          `${message.playerName}: ${message.message}`
+        ), { icon: '💬' })
+      }
+    })
+
     return () => {
       socket.off('puzzle-solved')
       socket.off('wrong-answer')
       socket.off('game-completed')
+      socket.off('new-message')
     }
-  }, [socket, room, roomCode, gameStarted, navigate])
+  }, [socket, room, roomCode, gameStarted, navigate, showChat, addMessage, playerName])
 
   const handleSubmitAnswer = (answer) => {
     socket.emit('submit-answer', {
@@ -129,10 +143,19 @@ export default function Game() {
           <div className="flex items-center gap-2">
             {/* Bouton Chat Textuel */}
             <button
-              onClick={() => setShowChat(!showChat)}
+              onClick={() => {
+                const next = !showChat
+                setShowChat(next)
+                if (next) setUnreadCount(0)
+              }}
               className="relative px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
             >
               💬 Chat
+              {unreadCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-0.5 border border-red-300">
+                  {unreadCount}
+                </span>
+              )}
             </button>
 
             {/* Bouton Quitter */}

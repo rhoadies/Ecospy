@@ -1,22 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import { useSocket } from '../context/SocketContext'
 import { useGame } from '../context/GameContext'
 
 export default function Chat({ onClose }) {
-  const { socket } = useSocket()
   const { roomCode, playerName, messages, addMessage } = useGame()
   const [inputMessage, setInputMessage] = useState('')
   const messagesEndRef = useRef(null)
 
-  useEffect(() => {
-    socket.on('new-message', (message) => {
-      addMessage(message)
-    })
-
-    return () => {
-      socket.off('new-message')
-    }
-  }, [socket, addMessage])
+  // Listener moved to Game.jsx so messages are captured even when panel is closed
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -26,7 +16,7 @@ export default function Chat({ onClose }) {
     e.preventDefault()
     if (!inputMessage.trim()) return
 
-    socket.emit('send-message', {
+    window.socket?.emit?.('send-message', {
       roomCode,
       playerName,
       message: inputMessage
