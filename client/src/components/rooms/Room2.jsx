@@ -106,8 +106,8 @@ export default function Room2({ onSubmit }) {
           </div>
         </div>
 
-        {/* Memory Grid */}
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-3 mb-8">
+        {/* Memory Grid: 4 x 4 (always 4 columns, 4 rows) */}
+        <div className="grid grid-cols-4 gap-3 mb-8">
           {cards.map((card, index) => {
             const isFlipped = flipped.includes(index) || matched.includes(index)
             const isMatched = matched.includes(index)
@@ -143,9 +143,13 @@ export default function Room2({ onSubmit }) {
 
                   {/* Face avant */}
                   <div
-                    className={`absolute inset-0 rounded-lg p-2 ${
-                      isMatched ? 'bg-primary/20 border-2 border-primary' : 'bg-gray-800'
-                    } flex flex-col items-center justify-center text-center`}
+                    className={`absolute inset-0 rounded-lg p-2 flex flex-col items-center justify-center text-center ${
+                      isMatched
+                        ? 'bg-primary/20 border-2 border-primary'
+                        : card.type === 'time'
+                        ? 'bg-yellow-800/60 border border-yellow-600 text-yellow-100'
+                        : 'bg-gray-800 text-white'
+                    }`}
                     style={{
                       backfaceVisibility: 'hidden',
                       transform: 'rotateY(180deg)'
