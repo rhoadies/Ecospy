@@ -106,9 +106,8 @@ export class GameManager {
   // Définir les réponses correctes (simplifiées)
   getCorrectAnswers() {
     return {
-      // Salle 1: Empreinte carbone
-      // Acceptation des valeurs originales + raccourci facile '1'
-      1: ['2940', '2.940', '2,940', '1'],
+      // Salle 1: Nouveau puzzle (3 meilleures options: 0 + 20 + 40 = 60)
+      1: ['60'],
       // Salle 2: Memory (8 paires) + raccourci facile '1'
       2: ['8', 'huit', '1'],
       // Salle 3: Région critique + raccourci facile '1'
