@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Lobby from './pages/Lobby'
 import Game from './pages/Game'
 import Debriefing from './pages/Debriefing'
+import CanvasDeck from './pages/CanvasDeck'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               <Route path="/lobby" element={<Lobby />} />
               <Route path="/game" element={<Game />} />
               <Route path="/debriefing" element={<Debriefing />} />
+              <Route path="/canvas" element={<CanvasDeck />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
             <Toaster 
