@@ -106,20 +106,20 @@ export default function Room4({ onSubmit }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card"
+        className="card p-4 md:p-6"
       >
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-5xl">⚡</span>
+        <div className="mb-4">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-3xl md:text-4xl">⚡</span>
             <div>
-              <h2 className="text-3xl font-bold text-primary">Salle 4 : Mix Énergétique Final</h2>
-              <p className="text-gray-400">Optimisez la production d'énergie pour le code final</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-primary">Salle 4 : Mix Énergétique Final</h2>
+              <p className="text-gray-400 text-sm md:text-base">Optimisez la production d'énergie pour le code final</p>
             </div>
           </div>
           
-          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-4">
-            <p className="text-yellow-400">
+          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-3">
+            <p className="text-yellow-400 text-sm">
               📋 <strong>Mission finale :</strong> Créez un mix énergétique optimal. 
               Le pourcentage total d'énergies renouvelables est le code final !
             </p>

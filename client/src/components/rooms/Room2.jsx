@@ -74,20 +74,20 @@ export default function Room2({ onSubmit }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card"
+        className="card p-4 md:p-6"
       >
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-5xl">🌊</span>
+        <div className="mb-4">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-3xl md:text-4xl">🌊</span>
             <div>
-              <h2 className="text-3xl font-bold text-primary">Salle 2 : Océan Pollué</h2>
-              <p className="text-gray-400">Associez les déchets à leur durée de décomposition</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-primary">Salle 2 : Océan Pollué</h2>
+              <p className="text-gray-400 text-sm md:text-base">Associez les déchets à leur durée de décomposition</p>
             </div>
           </div>
           
-          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-4 mb-4">
-            <p className="text-yellow-400">
+          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-3 mb-3">
+            <p className="text-yellow-400 text-sm">
               📋 <strong>Mission :</strong> Les océans sont envahis de déchets. Associez chaque déchet 
               à son temps de décomposition dans l'océan pour débloquer l'accès !
             </p>
@@ -107,7 +107,7 @@ export default function Room2({ onSubmit }) {
         </div>
 
         {/* Memory Grid: 4 x 4 (always 4 columns, 4 rows) - smaller cards */}
-        <div className="grid grid-cols-4 gap-2 mb-6 max-w-[700px] mx-auto">
+        <div className="grid grid-cols-4 gap-2 mb-4 max-w-[640px] mx-auto">
           {cards.map((card, index) => {
             const isFlipped = flipped.includes(index) || matched.includes(index)
             const isMatched = matched.includes(index)

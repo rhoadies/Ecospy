@@ -52,20 +52,20 @@ export default function Room1({ onSubmit }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card"
+        className="card p-4 md:p-6"
       >
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-5xl">🔐</span>
+        <div className="mb-4">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-3xl md:text-4xl">🔐</span>
             <div>
-              <h2 className="text-3xl font-bold text-primary">Salle 1 : Empreinte Carbone</h2>
-              <p className="text-gray-400">Choisissez 1 option dans chaque catégorie, puis entrez le total (g CO₂)</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-primary">Salle 1 : Empreinte Carbone</h2>
+              <p className="text-gray-400 text-sm md:text-base">Choisissez 1 option dans chaque catégorie, puis entrez le total (g CO₂)</p>
             </div>
           </div>
 
-          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-4">
-            <p className="text-yellow-400">
+          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-3">
+            <p className="text-yellow-400 text-sm">
               📋 <strong>Mission :</strong> Sélectionnez la <strong>meilleure option</strong> (la plus sobre en CO₂)
               dans chaque catégorie <strong>(Transport, Énergie, Alimentation)</strong>. Les quantités de CO₂ ne sont
               <strong> pas affichées</strong>. Calculez ensuite le <strong>total en grammes</strong> et entrez-le comme code.
@@ -74,15 +74,15 @@ export default function Room1({ onSubmit }) {
         </div>
 
         {/* Catégories */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-3 gap-3 md:gap-4 mb-4">
           {Object.entries(categories).map(([catKey, cat]) => (
-            <div key={catKey} className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-              <h3 className="text-xl font-semibold mb-4">{cat.title}</h3>
-              <div className="space-y-2">
+            <div key={catKey} className="bg-gray-900 rounded-lg p-3 border border-gray-700">
+              <h3 className="text-lg md:text-xl font-semibold mb-3">{cat.title}</h3>
+              <div className="space-y-2.5">
                 {Object.entries(cat.options).map(([optKey, opt]) => (
                   <label
                     key={optKey}
-                    className={`block p-3 rounded-lg cursor-pointer transition-all border-2 ${
+                    className={`block p-2.5 rounded-lg cursor-pointer transition-all border-2 ${
                       selected[catKey] === optKey ? 'bg-primary/20 border-primary' : 'bg-gray-800 border-transparent hover:border-gray-600'
                     }`}
                   >
@@ -95,7 +95,7 @@ export default function Room1({ onSubmit }) {
                       className="mr-3"
                     />
                     <div className="inline">
-                      <div className="font-medium">{opt.label}</div>
+                      <div className="font-medium text-sm md:text-base">{opt.label}</div>
                       {/* CO₂ hidden by design */}
                     </div>
                   </label>
@@ -110,17 +110,17 @@ export default function Room1({ onSubmit }) {
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 rounded-lg p-6 border-2 border-primary"
+            className="bg-gray-900 rounded-lg p-4 md:p-5 border-2 border-primary"
           >
             {/* Récapitulatif des choix avec CO2 affiché par option, sans total */}
-            <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <div className="grid md:grid-cols-3 gap-3 mb-4">
               {Object.entries(categories).map(([catKey, cat]) => {
                 const optKey = selected[catKey]
                 const opt = cat.options[optKey]
                 return (
-                  <div key={catKey} className="p-4 rounded-lg bg-gray-800 border border-gray-700">
-                    <div className="text-sm text-gray-400 mb-1">{cat.title}</div>
-                    <div className="font-semibold">{opt?.label || '—'}</div>
+                  <div key={catKey} className="p-3 rounded-lg bg-gray-800 border border-gray-700">
+                    <div className="text-xs text-gray-400 mb-1">{cat.title}</div>
+                    <div className="font-semibold text-sm md:text-base">{opt?.label || '—'}</div>
                     {opt && (
                       <div className="text-xs text-gray-400 mt-1">{opt.co2} g CO₂</div>
                     )}
@@ -129,26 +129,26 @@ export default function Room1({ onSubmit }) {
               })}
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3">
               <div>
-                <label className="block text-sm font-medium mb-2">Code d'accès (total en g CO₂)</label>
+                <label className="block text-sm font-medium mb-1">Code d'accès (total en g CO₂)</label>
                 <input
                   type="text"
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
                   placeholder="Ex: 180"
-                  className="input text-center text-2xl"
+                  className="input text-center text-xl md:text-2xl"
                 />
               </div>
 
-              <button type="submit" className="w-full btn-primary py-4 text-lg">
+              <button type="submit" className="w-full btn-primary py-3 md:py-4 text-lg">
                 🔓 Valider le code
               </button>
             </form>
           </motion.div>
         ) : (
-          <div className="text-center text-gray-500 py-8">
-            <p>Sélectionnez 1 option dans chaque catégorie pour continuer.</p>
+          <div className="text-center text-gray-500 py-4">
+            <p className="text-sm">Sélectionnez 1 option dans chaque catégorie pour continuer.</p>
           </div>
         )}
       </motion.div>
