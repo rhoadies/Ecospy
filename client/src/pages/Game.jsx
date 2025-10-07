@@ -29,6 +29,42 @@ export default function Game() {
   const [showChat, setShowChat] = useState(false)
   const [showTransition, setShowTransition] = useState(false)
   const [incomingRoom, setIncomingRoom] = useState(null)
+  const [showLearn, setShowLearn] = useState(false)
+  const [learnKey, setLearnKey] = useState(null)
+  const [nextRoomPending, setNextRoomPending] = useState(null)
+
+  // Mini debrief content per room
+  const miniEducational = {
+    1: {
+      title: '🌡️ Empreinte Carbone – À retenir',
+      points: [
+        "L'empreinte carbone moyenne d'un Français ~10 t CO₂/an",
+        "Objectif 2050: 2 t CO₂/an/personne",
+        'Les transports pèsent lourd; vélo/transports en commun aident'
+      ]
+    },
+    2: {
+      title: '🌊 Pollution Océanique – À retenir',
+      points: [
+        "8 Mt de plastique entrent dans l'océan chaque année",
+        'Des centaines d’espèces affectées; réduire et recycler est clé'
+      ]
+    },
+    3: {
+      title: '🌳 Déforestation – À retenir',
+      points: [
+        '10 Mha de forêts disparaissent chaque année',
+        'Consommer responsable et protéger les forêts est crucial'
+      ]
+    },
+    4: {
+      title: '⚡ Transition Énergétique – À retenir',
+      points: [
+        'Augmenter la part de renouvelables réduit les émissions',
+        'Efficacité et sobriété complètent le mix bas-carbone'
+      ]
+    }
+  }
   const [unreadCount, setUnreadCount] = useState(0)
 
   useEffect(() => {
@@ -41,12 +77,9 @@ export default function Game() {
     socket.on('puzzle-solved', ({ roomNumber, nextRoom, message }) => {
       toast.success(message)
       setIncomingRoom(nextRoom)
-      setShowTransition(true)
-      setTimeout(() => {
-        setShowTransition(false)
-        setCurrentRoom(nextRoom)
-        setIncomingRoom(null)
-      }, 1600)
+      setNextRoomPending(nextRoom)
+      setLearnKey(String(roomNumber))
+      setShowLearn(true)
     })
 
     // Écouter les mauvaises réponses
@@ -280,6 +313,55 @@ export default function Game() {
                 </span>
               </motion.div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mini debrief overlay before transition */}
+      <AnimatePresence>
+        {showLearn && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+          >
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              className="w-full max-w-xl mx-4 bg-gray-900 border border-gray-700 rounded-xl p-6"
+            >
+              <h3 className="text-xl font-bold text-primary mb-3">
+                {miniEducational[learnKey]?.title || 'À retenir'}
+              </h3>
+              <ul className="space-y-2 text-gray-300 mb-6">
+                {(miniEducational[learnKey]?.points || []).map((p, idx) => (
+                  <li key={idx} className="flex gap-2 text-sm">
+                    <span className="text-primary">•</span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => {
+                    // Skip to transition
+                    setShowLearn(false)
+                    setShowTransition(true)
+                    setTimeout(() => {
+                      setShowTransition(false)
+                      if (nextRoomPending) setCurrentRoom(nextRoomPending)
+                      setIncomingRoom(null)
+                      setNextRoomPending(null)
+                    }, 1600)
+                  }}
+                  className="btn-primary px-4 py-2"
+                >
+                  Continuer
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
