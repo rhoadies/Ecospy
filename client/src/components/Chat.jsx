@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
+import { useSocket } from '../context/SocketContext'
 import { useGame } from '../context/GameContext'
 
 export default function Chat({ onClose }) {
+  const { socket } = useSocket()
   const { roomCode, playerName, messages, addMessage } = useGame()
   const [inputMessage, setInputMessage] = useState('')
   const messagesEndRef = useRef(null)
@@ -16,7 +18,7 @@ export default function Chat({ onClose }) {
     e.preventDefault()
     if (!inputMessage.trim()) return
 
-    window.socket?.emit?.('send-message', {
+    socket.emit('send-message', {
       roomCode,
       playerName,
       message: inputMessage
