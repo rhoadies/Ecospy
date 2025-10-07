@@ -224,10 +224,42 @@ export default function Debriefing() {
           >
             <h3 className="text-xl font-bold mb-3">🔗 Pour aller plus loin</h3>
             <div className="text-sm text-gray-300 space-y-2">
-              <p>• <strong>ADEME</strong> - Agence de la transition écologique</p>
-              <p>• <strong>GIEC</strong> - Rapports sur le changement climatique</p>
-              <p>• <strong>Bon Pote</strong> - Vulgarisation scientifique du climat</p>
-              <p>• <strong>NASA Climate</strong> - Données scientifiques en temps réel</p>
+              <p>
+                • <strong>ADEME</strong> – Agence de la transition écologique
+                {' '}<a
+                  href="https://www.ademe.fr"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary underline hover:text-green-400"
+                >ademe.fr</a>
+              </p>
+              <p>
+                • <strong>GIEC</strong> – Groupe d'experts intergouvernemental sur l'évolution du climat
+                {' '}<a
+                  href="https://www.ipcc.ch/languages-2/francais/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary underline hover:text-green-400"
+                >ipcc.ch</a>
+              </p>
+              <p>
+                • <strong>Bon Pote</strong> – Vulgarisation scientifique du climat
+                {' '}<a
+                  href="https://bonpote.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary underline hover:text-green-400"
+                >bonpote.com</a>
+              </p>
+              <p>
+                • <strong>NASA Climate</strong> – Données et indicateurs climatiques
+                {' '}<a
+                  href="https://climate.nasa.gov/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-primary underline hover:text-green-400"
+                >climate.nasa.gov</a>
+              </p>
             </div>
           </motion.div>
 
