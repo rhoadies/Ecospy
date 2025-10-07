@@ -145,7 +145,7 @@ export default function Home() {
               <div className="mt-8 p-4 bg-gray-900 rounded-lg border border-gray-700">
                 <h4 className="font-semibold text-primary mb-2">ℹ️ Informations</h4>
                 <ul className="text-sm text-gray-400 space-y-1">
-                  <li>• 2 à 4 joueurs</li>
+                  <li>• 1 à 4 joueurs</li>
                   <li>• Durée : 30 minutes</li>
                   <li>• Coopération requise</li>
                   <li>• Thème : Environnement</li>

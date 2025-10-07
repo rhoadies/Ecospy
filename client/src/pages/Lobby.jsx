@@ -46,10 +46,6 @@ export default function Lobby() {
   }, [socket, room, roomCode, navigate])
 
   const handleStartGame = () => {
-    if (room.players.length < 2) {
-      toast.error('Il faut au moins 2 joueurs pour commencer')
-      return
-    }
     socket.emit('start-game', { roomCode })
   }
 
@@ -161,12 +157,10 @@ export default function Lobby() {
             {isHost ? (
               <button
                 onClick={handleStartGame}
-                disabled={room?.players?.length < 2}
+                disabled={room?.players?.length < 1}
                 className="w-full btn-primary py-4 text-lg"
               >
-                {room?.players?.length < 2 
-                  ? '⏳ En attente de joueurs (min. 2)'
-                  : '🚀 Lancer la mission'}
+                🚀 Lancer la mission
               </button>
             ) : (
               <div className="text-center py-4 bg-gray-900 rounded-lg border border-gray-700">
