@@ -1,40 +1,46 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-// Salle 1 : Choisir les 3 meilleures options et calculer le total
+// Salle 1 : 3 catégories (Transport, Énergie, Alimentation) – choisir la meilleure de chaque
 export default function Room1({ onSubmit }) {
-  const [selectedKeys, setSelectedKeys] = useState([]) // three selections max
+  const [selected, setSelected] = useState({ transport: '', energy: '', food: '' })
   const [answer, setAnswer] = useState('')
 
-  // Options proposées (valeurs en grammes de CO2)
-  const options = [
-    { key: 'velo', label: 'Vélo (50km)', co2: 0 },
-    { key: 'train', label: 'Train (50km)', co2: 20 },
-    { key: 'local', label: 'Légumes locaux', co2: 40 },
-    { key: 'solaire', label: 'Électricité solaire (10kWh)', co2: 40 },
-    { key: 'nucleaire', label: 'Électricité nucléaire (10kWh)', co2: 60 },
-    { key: 'legumes', label: 'Repas végétarien', co2: 80 },
-    { key: 'poulet', label: 'Poulet (200g)', co2: 260 },
-    { key: 'gaz', label: 'Chauffage gaz naturel (10kWh)', co2: 480 },
-    { key: 'boeuf', label: 'Steak de bœuf (200g)', co2: 800 },
-    { key: 'voiture', label: 'Voiture essence (50km)', co2: 1200 },
-    { key: 'avion', label: 'Avion court-courrier (50km)', co2: 1400 }
-  ]
-
-  const toggleSelect = (key) => {
-    setSelectedKeys(prev => {
-      if (prev.includes(key)) return prev.filter(k => k !== key)
-      if (prev.length >= 3) return prev // max 3
-      return [...prev, key]
-    })
+  const categories = {
+    transport: {
+      title: '🚗 Transport',
+      options: {
+        velo: { label: 'Vélo (50km)', co2: 0 },
+        train: { label: 'Train (50km)', co2: 20 },
+        voiture: { label: 'Voiture essence (50km)', co2: 1200 },
+        avion: { label: 'Avion court-courrier (50km)', co2: 1400 }
+      }
+    },
+    energy: {
+      title: '⚡ Énergie',
+      options: {
+        solaire: { label: 'Électricité solaire (10kWh)', co2: 40 },
+        nucleaire: { label: 'Électricité nucléaire (10kWh)', co2: 60 },
+        gaz: { label: 'Chauffage gaz naturel (10kWh)', co2: 480 },
+        charbon: { label: 'Électricité charbon (10kWh)', co2: 920 }
+      }
+    },
+    food: {
+      title: '🍽️ Alimentation',
+      options: {
+        local: { label: 'Légumes locaux', co2: 40 },
+        legumes: { label: 'Repas végétarien', co2: 80 },
+        poulet: { label: 'Poulet (200g)', co2: 260 },
+        boeuf: { label: 'Steak de bœuf (200g)', co2: 800 }
+      }
+    }
   }
 
-  const isComplete = selectedKeys.length === 3
+  const isComplete = selected.transport && selected.energy && selected.food
 
-  const hiddenTotal = selectedKeys.reduce((sum, key) => {
-    const opt = options.find(o => o.key === key)
-    return sum + (opt ? opt.co2 : 0)
-  }, 0)
+  const handleChange = (category, value) => {
+    setSelected(prev => ({ ...prev, [category]: value }))
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -53,53 +59,59 @@ export default function Room1({ onSubmit }) {
           <div className="flex items-center gap-3 mb-4">
             <span className="text-5xl">🔐</span>
             <div>
-              <h2 className="text-3xl font-bold text-primary">Salle 1 : Choix éco-responsables</h2>
-              <p className="text-gray-400">Choisissez les 3 meilleures options pour réduire le réchauffement</p>
+              <h2 className="text-3xl font-bold text-primary">Salle 1 : Empreinte Carbone</h2>
+              <p className="text-gray-400">Choisissez 1 option dans chaque catégorie, puis entrez le total (g CO₂)</p>
             </div>
           </div>
 
           <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-4">
             <p className="text-yellow-400">
-              📋 <strong>Mission :</strong> Sélectionnez <strong>3 options</strong> parmi la liste ci-dessous.
-              Les valeurs CO₂ ne sont pas affichées avant d'avoir choisi 3 options. Ensuite, <strong>calculez le total</strong> (en grammes) et entrez-le comme code.
+              📋 <strong>Mission :</strong> Sélectionnez la <strong>meilleure option</strong> (la plus sobre en CO₂)
+              dans chaque catégorie <strong>(Transport, Énergie, Alimentation)</strong>. Les quantités de CO₂ ne sont
+              <strong> pas affichées</strong>. Calculez ensuite le <strong>total en grammes</strong> et entrez-le comme code.
             </p>
           </div>
         </div>
 
-        {/* Liste des options (sans CO₂ affiché) */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          {options.map((opt) => {
-            const selected = selectedKeys.includes(opt.key)
-            return (
-              <button
-                key={opt.key}
-                onClick={() => toggleSelect(opt.key)}
-                className={`text-left p-4 rounded-lg border-2 transition-all ${
-                  selected ? 'bg-primary/20 border-primary' : 'bg-gray-900 border-gray-700 hover:border-gray-500'
-                }`}
-              >
-                <div className="font-medium">{opt.label}</div>
-                {!isComplete && (
-                  <div className="text-xs text-gray-500 mt-1">Sélectionnez jusqu'à 3 options</div>
-                )}
-              </button>
-            )
-          })}
+        {/* Catégories */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {Object.entries(categories).map(([catKey, cat]) => (
+            <div key={catKey} className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+              <h3 className="text-xl font-semibold mb-4">{cat.title}</h3>
+              <div className="space-y-2">
+                {Object.entries(cat.options).map(([optKey, opt]) => (
+                  <label
+                    key={optKey}
+                    className={`block p-3 rounded-lg cursor-pointer transition-all border-2 ${
+                      selected[catKey] === optKey ? 'bg-primary/20 border-primary' : 'bg-gray-800 border-transparent hover:border-gray-600'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name={catKey}
+                      value={optKey}
+                      checked={selected[catKey] === optKey}
+                      onChange={(e) => handleChange(catKey, e.target.value)}
+                      className="mr-3"
+                    />
+                    <div className="inline">
+                      <div className="font-medium">{opt.label}</div>
+                      {/* CO₂ hidden by design */}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Saisie du total une fois 3 options choisies */}
+        {/* Saisie du total */}
         {isComplete ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-gray-900 rounded-lg p-6 border-2 border-primary"
           >
-            <div className="text-center mb-4">
-              <p className="text-gray-300">
-                Vous avez sélectionné <strong>{selectedKeys.length}</strong> options. Calculez le <strong>total en grammes de CO₂</strong> et saisissez-le ci-dessous.
-              </p>
-            </div>
-
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Code d'accès (total en g CO₂)</label>
@@ -107,7 +119,7 @@ export default function Room1({ onSubmit }) {
                   type="text"
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  placeholder="Ex: 60"
+                  placeholder="Ex: 80"
                   className="input text-center text-2xl"
                 />
               </div>
@@ -115,15 +127,11 @@ export default function Room1({ onSubmit }) {
               <button type="submit" className="w-full btn-primary py-4 text-lg">
                 🔓 Valider le code
               </button>
-
-              <p className="text-xs text-gray-500 text-center">
-                Astuce: additionnez mentalement; les valeurs réelles sont 0g, 20g, 40g pour les meilleures options.
-              </p>
             </form>
           </motion.div>
         ) : (
           <div className="text-center text-gray-500 py-8">
-            <p>Choisissez 3 options. Les valeurs CO₂ seront révélées après.</p>
+            <p>Sélectionnez 1 option dans chaque catégorie pour continuer.</p>
           </div>
         )}
       </motion.div>

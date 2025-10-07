@@ -106,8 +106,8 @@ export class GameManager {
   // Définir les réponses correctes (simplifiées)
   getCorrectAnswers() {
     return {
-      // Salle 1: Nouveau puzzle (3 meilleures options: 0 + 20 + 40 = 60)
-      1: ['60'],
+      // Salle 1: 3 catégories, meilleures options: 0 (vélo) + 40 (solaire) + 40 (local) = 80
+      1: ['80'],
       // Salle 2: Memory (8 paires) + raccourci facile '1'
       2: ['8', 'huit', '1'],
       // Salle 3: Région critique + raccourci facile '1'
