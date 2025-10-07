@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useSocket } from '../../context/SocketContext'
 import { useGame } from '../../context/GameContext'
+import toast from 'react-hot-toast'
 
 // Salle 3 : Énigme Coopérative - Carte de Déforestation
 export default function Room3({ onSubmit }) {
@@ -10,8 +11,7 @@ export default function Room3({ onSubmit }) {
   const [selectedRegion, setSelectedRegion] = useState('')
   const [sharedClues, setSharedClues] = useState([])
   const [myClue, setMyClue] = useState(null)
-  // Quiz additionnel: mêmes principes que la 1ère question (choix uniques)
-  const [answers, setAnswers] = useState({}) // { [qIndex]: optionKey }
+  const [stage, setStage] = useState(0) // 0..4 to guess 5 regions in order
 
   const regions = [
     {
@@ -53,21 +53,55 @@ export default function Room3({ onSubmit }) {
         area: '0.1M km²',
         critical: true
       }
+    },
+    {
+      id: 'taiga',
+      name: 'Taïga (boréale)',
+      icon: '🐺',
+      data: {
+        deforestation: '3%',
+        area: '13M km²',
+        critical: false
+      }
     }
   ]
 
-  useEffect(() => {
-    // Attribuer un indice aléatoire à ce joueur
-    const clues = [
+  // Order to guess
+  const targetOrder = ['amazonie', 'indonesie', 'atlantique', 'congo', 'taiga']
+
+  const clueBank = {
+    amazonie: [
       { text: 'La région la plus critique a perdu 17% de sa surface', hint: 'amazonie' },
       { text: 'Le "poumon de la Terre" est menacé', hint: 'amazonie' },
-      { text: 'La plus grande forêt tropicale du monde est en danger', hint: 'amazonie' },
-      { text: 'Cette région représente 10% de la biodiversité mondiale', hint: 'amazonie' }
+      { text: 'La plus grande forêt tropicale du monde est en danger', hint: 'amazonie' }
+    ],
+    indonesie: [
+      { text: 'Archipel d’Asie du Sud-Est, palmiers à huile et tigres', hint: 'indonesie' },
+      { text: 'Îles tropicales avec une forte pression agricole', hint: 'indonesie' }
+    ],
+    atlantique: [
+      { text: 'Forêt côtière d’Amérique du Sud très fragmentée', hint: 'atlantique' },
+      { text: 'A perdu plus de 80% de sa surface originelle', hint: 'atlantique' }
+    ],
+    congo: [
+      { text: 'Deuxième plus grande forêt tropicale après l’Amazonie', hint: 'congo' },
+      { text: 'Située en Afrique centrale, refuge pour les gorilles', hint: 'congo' }
+    ],
+    taiga: [
+      { text: 'Forêt boréale des hautes latitudes, surtout conifères', hint: 'taiga' },
+      { text: 'Immense biome du nord, faible densité humaine', hint: 'taiga' }
     ]
-    
-    const randomClue = clues[Math.floor(Math.random() * clues.length)]
-    setMyClue(randomClue)
-  }, [])
+  }
+
+  useEffect(() => {
+    // Give a clue for the current target region
+    const target = targetOrder[stage]
+    const pool = clueBank[target] || []
+    if (pool.length > 0) {
+      const randomClue = pool[Math.floor(Math.random() * pool.length)]
+      setMyClue(randomClue)
+    }
+  }, [stage])
 
   useEffect(() => {
     // Écouter les indices partagés par les autres joueurs
@@ -93,37 +127,23 @@ export default function Room3({ onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (selectedRegion && isQuizComplete) {
-      onSubmit(selectedRegion)
+    if (!selectedRegion) return
+    const target = targetOrder[stage]
+    if (selectedRegion === target) {
+      // Correct -> advance to next stage or complete
+      const nextStage = stage + 1
+      if (nextStage >= targetOrder.length) {
+        toast.success('Toutes les régions ont été identifiées !')
+        onSubmit('amazonie') // final answer to server stays consistent
+      } else {
+        toast.success('Correct ! Passez à la région suivante.')
+        setStage(nextStage)
+        setSelectedRegion('')
+        setSharedClues([])
+      }
+    } else {
+      toast.error('Ce n’est pas la bonne région. Réessayez.')
     }
-  }
-
-  // Banque de questions (réponses uniques)
-  const questions = [
-    {
-      title: 'Quelle action a le plus d\'impact pour protéger les forêts ? ',
-      options: {
-        a: 'Réduire la consommation de viande',
-        b: 'Recycler le papier uniquement',
-        c: 'Utiliser des sacs plastiques réutilisables seulement'
-      },
-      correct: 'a'
-    },
-    {
-      title: 'La déforestation contribue à environ quel pourcentage des émissions mondiales ?',
-      options: { a: '5%', b: '15%', c: '40%' },
-      correct: 'b'
-    },
-    {
-      title: 'Quel écosystème absorbe le plus de CO₂ ?',
-      options: { a: 'Forêts', b: 'Déserts', c: 'Villes' },
-      correct: 'a'
-    }
-  ]
-
-  const isQuizComplete = questions.every((_, idx) => Boolean(answers[idx]))
-  const selectAnswer = (qIndex, key) => {
-    setAnswers(prev => ({ ...prev, [qIndex]: key }))
   }
 
   return (
@@ -205,11 +225,12 @@ export default function Room3({ onSubmit }) {
             </div>
           </div>
 
-          {/* Sélection de la région + Quiz */}
+          {/* Séquences de régions à identifier (5 au total) */}
           <div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="bg-gray-900 rounded-lg p-6 border border-gray-700">
-                <h3 className="text-xl font-bold mb-4">🌍 Sélectionnez la région critique</h3>
+                <h3 className="text-xl font-bold mb-2">🌍 Étape {stage + 1} / {targetOrder.length}</h3>
+                <p className="text-sm text-gray-400 mb-4">Identifiez la région correspondant aux indices partagés.</p>
                 
                 <div className="space-y-3">
                   {regions.map((region) => (
@@ -247,45 +268,12 @@ export default function Room3({ onSubmit }) {
                 </div>
               </div>
 
-              {/* Quiz additionnel */}
-              <div className="bg-gray-900 rounded-lg p-6 border border-gray-700">
-                <h3 className="text-xl font-bold mb-4">🧩 Questions complémentaires</h3>
-                <div className="space-y-4">
-                  {questions.map((q, qIndex) => (
-                    <div key={qIndex} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-                      <div className="font-semibold mb-3">{qIndex + 1}. {q.title}</div>
-                      <div className="grid sm:grid-cols-3 gap-2">
-                        {Object.entries(q.options).map(([key, label]) => (
-                          <label
-                            key={key}
-                            className={`p-3 rounded-lg cursor-pointer border-2 transition-all ${
-                              answers[qIndex] === key ? 'bg-primary/20 border-primary' : 'bg-gray-900 border-transparent hover:border-gray-600'
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name={`q-${qIndex}`}
-                              value={key}
-                              checked={answers[qIndex] === key}
-                              onChange={() => selectAnswer(qIndex, key)}
-                              className="mr-2"
-                            />
-                            <span className="align-middle">{label}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-xs text-gray-400 mt-3">Sélectionnez une réponse pour chaque question.</p>
-              </div>
-
               <button
                 type="submit"
-                disabled={!selectedRegion || !isQuizComplete}
+                disabled={!selectedRegion}
                 className="w-full btn-primary py-4 text-lg"
               >
-                🔓 Valider la région
+                {stage + 1 < targetOrder.length ? '✅ Valider et continuer' : '🔓 Valider la dernière région'}
               </button>
             </form>
 
