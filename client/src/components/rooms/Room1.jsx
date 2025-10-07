@@ -112,6 +112,23 @@ export default function Room1({ onSubmit }) {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-gray-900 rounded-lg p-6 border-2 border-primary"
           >
+            {/* Récapitulatif des choix avec CO2 affiché par option, sans total */}
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
+              {Object.entries(categories).map(([catKey, cat]) => {
+                const optKey = selected[catKey]
+                const opt = cat.options[optKey]
+                return (
+                  <div key={catKey} className="p-4 rounded-lg bg-gray-800 border border-gray-700">
+                    <div className="text-sm text-gray-400 mb-1">{cat.title}</div>
+                    <div className="font-semibold">{opt?.label || '—'}</div>
+                    {opt && (
+                      <div className="text-xs text-gray-400 mt-1">{opt.co2} g CO₂</div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Code d'accès (total en g CO₂)</label>
@@ -119,7 +136,7 @@ export default function Room1({ onSubmit }) {
                   type="text"
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  placeholder="Ex: 80"
+                  placeholder="Ex: 180"
                   className="input text-center text-2xl"
                 />
               </div>
