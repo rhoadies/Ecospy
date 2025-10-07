@@ -1,10 +1,8 @@
 import { motion } from 'framer-motion'
 import { useGame } from '../context/GameContext'
-import { useVoice } from '../context/VoiceContext'
 
 export default function PlayersList() {
   const { room, playerName } = useGame()
-  const { isMicEnabled, isSpeaking, peers } = useVoice()
 
   if (!room || !room.players) return null
 
@@ -26,16 +24,8 @@ export default function PlayersList() {
         {room.players.map((player, index) => {
           const isMe = player.name === playerName
           // Retrouver l'entrée peer par nom (côté écouteur on n'a pas forcement le socketId)
-          const peerEntry = Object.entries(peers).find(([_, p]) => p.name === player.name)
-          const peerVoice = peerEntry?.[1]
-
-          // Est considéré "en vocal" si :
-          // - c'est moi et mon micro est actif
-          // - OU une connexion WebRTC existe pour ce joueur (entry présente), même sans stream (mode écoute seule)
-          // - OU nous recevons déjà son stream
-          const isInVoice = isMe ? isMicEnabled : Boolean(peerVoice) || Boolean(peerVoice?.stream)
-
-          const isPlayerSpeaking = isMe ? isSpeaking : peerVoice?.isSpeaking
+          const isInVoice = false
+          const isPlayerSpeaking = false
 
           return (
             <motion.div
@@ -102,34 +92,13 @@ export default function PlayersList() {
                 </div>
               </div>
 
-              {isPlayerSpeaking && (
-                <div className="flex gap-0.5 items-end h-6">
-                  {[1, 2, 3].map((bar) => (
-                    <motion.div
-                      key={bar}
-                      animate={{ height: ['20%', '80%', '40%', '90%', '30%'] }}
-                      transition={{ duration: 0.8, repeat: Infinity, delay: bar * 0.1 }}
-                      className="w-1 bg-primary rounded-t"
-                      style={{ minHeight: '20%' }}
-                    />
-                  ))}
-                </div>
-              )}
+              {/* Voice indicators removed */}
             </motion.div>
           )
         })}
       </div>
 
-      {Object.keys(peers).length > 0 && (
-        <div className="mt-4 pt-3 border-t border-gray-700">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-gray-400">🎤 En vocal</span>
-            <span className="text-primary font-bold">
-              {Object.keys(peers).length + (isMicEnabled ? 1 : 0)}
-            </span>
-          </div>
-        </div>
-      )}
+      {/* Voice status removed */}
     </motion.div>
   )
 }

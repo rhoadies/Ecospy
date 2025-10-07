@@ -142,73 +142,7 @@ io.on('connection', (socket) => {
     socket.to(roomCode).emit('clue-shared', { playerId, clueData });
   });
 
-  // === WebRTC Voice Chat Events ===
-  
-  // Joueur prêt pour le vocal
-  socket.on('voice-ready', ({ roomCode, playerName }) => {
-    // Informer tous les autres joueurs
-    socket.to(roomCode).emit('voice-user-ready', {
-      socketId: socket.id,
-      playerName
-    });
-    
-    // Envoyer au nouveau la liste des joueurs déjà en vocal
-    const socketsInRoom = io.sockets.adapter.rooms.get(roomCode);
-    if (socketsInRoom) {
-      socketsInRoom.forEach((socketId) => {
-        if (socketId !== socket.id) {
-          // Demander aux autres de s'annoncer
-          io.to(socketId).emit('voice-request-announce', {
-            newSocketId: socket.id,
-            roomCode
-          });
-        }
-      });
-    }
-    
-    console.log(`🎤 ${playerName} prêt pour le vocal dans ${roomCode}`);
-  });
-
-  // Réannoncer sa présence vocale
-  socket.on('voice-announce', ({ roomCode, playerName, targetSocketId }) => {
-    io.to(targetSocketId).emit('voice-user-ready', {
-      socketId: socket.id,
-      playerName
-    });
-  });
-
-  // Offre WebRTC
-  socket.on('voice-offer', ({ roomCode, target, offer }) => {
-    io.to(target).emit('voice-offer', {
-      from: socket.id,
-      offer
-    });
-  });
-
-  // Réponse WebRTC
-  socket.on('voice-answer', ({ roomCode, target, answer }) => {
-    io.to(target).emit('voice-answer', {
-      from: socket.id,
-      answer
-    });
-  });
-
-  // ICE Candidate
-  socket.on('voice-ice-candidate', ({ roomCode, target, candidate }) => {
-    io.to(target).emit('voice-ice-candidate', {
-      from: socket.id,
-      candidate
-    });
-  });
-
-  // Détection de parole
-  socket.on('voice-speaking', ({ roomCode, isSpeaking, volume }) => {
-    socket.to(roomCode).emit('voice-user-speaking', {
-      socketId: socket.id,
-      isSpeaking,
-      volume
-    });
-  });
+  // Voice chat features removed
 
   // Déconnexion
   socket.on('disconnect', () => {
@@ -218,10 +152,7 @@ io.on('connection', (socket) => {
         players: result.players,
         leftPlayer: result.playerName
       });
-      // Notifier aussi pour le vocal
-      io.to(result.roomCode).emit('voice-user-left', {
-        socketId: socket.id
-      });
+      // Voice notifications removed
       console.log(`🔴 ${result.playerName} a quitté la partie ${result.roomCode}`);
     }
     console.log(`🔴 Joueur déconnecté: ${socket.id}`);
