@@ -1,5 +1,5 @@
 # 🌍 EcoSpy - Mission Climat
-
+---
 Escape Game numérique éducatif (multijoueur 2–4 joueurs) réalisé pour le Workshop M1 2025‑2026 (EPSI/WIS).
 
 ## 🎯 Objectifs
