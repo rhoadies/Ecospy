@@ -65,31 +65,7 @@ export default function PlayersList() {
                   )}
                 </div>
                 
-                <div className="flex items-center gap-1 mt-0.5">
-                  {isMe ? (
-                    isMicEnabled ? (
-                      isSpeaking ? (
-                        <span className="text-xs text-primary">🎤 Vous parlez...</span>
-                      ) : (
-                        <span className="text-xs text-gray-300">🎤 Micro activé</span>
-                      )
-                    ) : (
-                      <span className="text-xs text-gray-500">🔇 Micro désactivé</span>
-                    )
-                  ) : isInVoice ? (
-                    peerVoice?.stream ? (
-                      peerVoice?.isSpeaking ? (
-                        <span className="text-xs text-primary">🎤 Parle...</span>
-                      ) : (
-                        <span className="text-xs text-gray-300">🎧 En écoute</span>
-                      )
-                    ) : (
-                      <span className="text-xs text-gray-400">🎧 En écoute</span>
-                    )
-                  ) : (
-                    <span className="text-xs text-gray-500">🔇 Pas en vocal</span>
-                  )}
-                </div>
+                {/* Voice status removed */}
               </div>
 
               {/* Voice indicators removed */}
