@@ -27,6 +27,8 @@ export default function Game() {
   } = useGame()
 
   const [showChat, setShowChat] = useState(false)
+  const [showTransition, setShowTransition] = useState(false)
+  const [incomingRoom, setIncomingRoom] = useState(null)
   const [unreadCount, setUnreadCount] = useState(0)
 
   useEffect(() => {
@@ -35,12 +37,16 @@ export default function Game() {
       return
     }
 
-    // Écouter la résolution d'énigmes
+    // Écouter la résolution d'énigmes → animation d'infiltration avant passage
     socket.on('puzzle-solved', ({ roomNumber, nextRoom, message }) => {
       toast.success(message)
+      setIncomingRoom(nextRoom)
+      setShowTransition(true)
       setTimeout(() => {
+        setShowTransition(false)
         setCurrentRoom(nextRoom)
-      }, 1500)
+        setIncomingRoom(null)
+      }, 1600)
     })
 
     // Écouter les mauvaises réponses
@@ -137,7 +143,7 @@ export default function Game() {
           </div>
 
           {/* Timer */}
-          <Timer maxTime={1800} />
+          <Timer maxTime={600} />
 
           {/* Actions */}
           <div className="flex items-center gap-2">
@@ -220,6 +226,63 @@ export default function Game() {
           </div>
         </div>
       </div>
+
+      {/* Transition overlay: porte qui s'ouvre + agent qui avance */}
+      <AnimatePresence>
+        {showTransition && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+          >
+            <div className="relative w-full max-w-xl mx-auto h-64">
+              {/* Porte (verrou → déverrouillage) */}
+              <motion.div
+                className="absolute left-1/2 -translate-x-1/2 top-8 text-6xl"
+                initial={{ rotate: -10, scale: 0.8 }}
+                animate={{ rotate: [0, -5, 0], scale: [0.8, 1, 1] }}
+                transition={{ duration: 0.6 }}
+              >
+                🔒
+              </motion.div>
+              <motion.div
+                className="absolute left-1/2 -translate-x-1/2 top-8 text-6xl"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: [0, 0, 1], scale: [0.8, 0.9, 1] }}
+                transition={{ duration: 1.0 }}
+              >
+                🔓
+              </motion.div>
+
+              {/* Couloir */}
+              <div className="absolute inset-x-6 bottom-10 top-24 bg-gradient-to-b from-gray-800/80 to-black/80 rounded-xl border border-gray-700" />
+
+              {/* Agent qui avance vers la porte */}
+              <motion.div
+                className="absolute bottom-10 left-6 text-5xl"
+                initial={{ x: 0 }}
+                animate={{ x: ['0%', '35%', '70%'] }}
+                transition={{ duration: 1.1, ease: 'easeInOut' }}
+              >
+                🕵️
+              </motion.div>
+
+              {/* Étiquette prochaine salle */}
+              <motion.div
+                className="absolute bottom-3 left-0 right-0 text-center"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <span className="px-3 py-1 rounded bg-primary/20 border border-primary text-primary text-sm">
+                  Accès autorisé • Salle {incomingRoom}
+                </span>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

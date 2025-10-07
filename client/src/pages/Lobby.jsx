@@ -141,7 +141,7 @@ export default function Lobby() {
                 et récupérer les données sur la pollution mondiale.
               </p>
               <p>
-                <strong className="text-white">Durée :</strong> 30 minutes maximum
+                <strong className="text-white">Durée :</strong> 10 minutes maximum
               </p>
               <p>
                 <strong className="text-white">Difficulté :</strong> Coopération requise
