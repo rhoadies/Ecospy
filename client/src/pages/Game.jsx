@@ -163,12 +163,12 @@ export default function Game() {
 
       {/* Header fixe */}
       <div className="fixed top-0 left-0 right-0 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 py-2 md:px-4 md:py-4 flex items-center justify-between">
           {/* Info partie */}
-          <div className="flex items-center gap-4">
-            <div className="text-sm">
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="text-xs md:text-sm">
               <span className="text-gray-400">Salle</span>
-              <span className="ml-2 text-2xl font-bold text-primary">{currentRoom}/4</span>
+              <span className="ml-2 text-xl md:text-2xl font-bold text-primary">{currentRoom}/4</span>
             </div>
             <div className="hidden md:block text-sm text-gray-400">
               Code: <span className="text-white font-mono">{roomCode}</span>
@@ -187,7 +187,7 @@ export default function Game() {
                 setShowChat(next)
                 if (next) setUnreadCount(0)
               }}
-              className="relative px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              className="relative px-3 py-2 md:px-4 md:py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
             >
               💬 Chat
               {unreadCount > 0 && (
@@ -200,7 +200,7 @@ export default function Game() {
             {/* Bouton Quitter */}
             <button
               onClick={handleQuit}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+              className="px-3 py-2 md:px-4 md:py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
               title="Quitter la partie"
             >
               ✕ Quitter

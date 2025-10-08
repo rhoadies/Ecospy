@@ -160,7 +160,7 @@ export default function Lobby() {
                 disabled={room?.players?.length < 1}
                 className="w-full btn-primary py-4 text-lg"
               >
-                🚀 Lancer la mission
+                Lancer la mission
               </button>
             ) : (
               <div className="text-center py-4 bg-gray-900 rounded-lg border border-gray-700">
