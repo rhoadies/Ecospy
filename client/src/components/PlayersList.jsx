@@ -1,23 +1,48 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useGame } from '../context/GameContext'
 
 export default function PlayersList() {
   const { room, playerName } = useGame()
+  const [collapsed, setCollapsed] = useState(false)
 
   if (!room || !room.players) return null
 
   return (
-    <motion.div
-      initial={{ x: -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      className="fixed left-2 top-20 bg-gray-900/95 backdrop-blur-sm rounded-lg border border-gray-700 p-3 z-30 min-w-[160px] max-w-[220px] shadow-xl"
-    >
-      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-700">
-        <span className="text-xl">👥</span>
-        <div>
-          <h3 className="font-bold text-white text-sm">Équipe</h3>
-          <p className="text-xs text-gray-400">{room.players.length} joueur(s)</p>
+    <>
+      {/* Collapsed toggle button (shown when panel is collapsed, especially on mobile) */}
+      {collapsed && (
+        <button
+          onClick={() => setCollapsed(false)}
+          className="fixed left-2 top-20 z-30 px-2 py-1 rounded-full bg-gray-900/90 border border-gray-700 text-white text-sm shadow"
+          aria-label="Afficher l'équipe"
+        >
+          👥 Équipe
+        </button>
+      )}
+
+      {!collapsed && (
+        <motion.div
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="fixed left-2 top-20 bg-gray-900/95 backdrop-blur-sm rounded-lg border border-gray-700 p-3 z-30 min-w-[160px] max-w-[220px] shadow-xl"
+        >
+      <div className="flex items-center justify-between gap-2 mb-3 pb-2 border-b border-gray-700">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">👥</span>
+          <div>
+            <h3 className="font-bold text-white text-sm">Équipe</h3>
+            <p className="text-xs text-gray-400">{room.players.length} joueur(s)</p>
+          </div>
         </div>
+        <button
+          onClick={() => setCollapsed(true)}
+          className="text-xs px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 border border-gray-700"
+          aria-label="Réduire"
+          title="Réduire"
+        >
+          ⤫
+        </button>
       </div>
 
       <div className="space-y-1.5">
@@ -76,7 +101,9 @@ export default function PlayersList() {
       </div>
 
       {/* Voice status removed */}
-    </motion.div>
+        </motion.div>
+      )}
+    </>
   )
 }
 
