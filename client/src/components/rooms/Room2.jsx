@@ -18,7 +18,7 @@ export default function Room2({ onSubmit }) {
     { id: 7, type: 'waste', value: 'Canette alu', icon: '🥫', info: '200 ans' },
     { id: 8, type: 'time', value: '200 ans', icon: '⏰', info: 'Canette alu' },
     { id: 9, type: 'waste', value: 'Polystyrène', icon: '📦', info: '500 ans' },
-    { id: 10, type: 'time', value: '500 ans', icon: '⏰', info: 'Styrofoam' },
+    { id: 10, type: 'time', value: '500 ans', icon: '⏰', info: 'Polystyrène' },
     { id: 11, type: 'waste', value: 'Fil de pêche', icon: '🎣', info: '600 ans' },
     { id: 12, type: 'time', value: '600 ans', icon: '⏰', info: 'Fil de pêche' },
     { id: 13, type: 'waste', value: 'Bouteille verre', icon: '🍷', info: '4000 ans' },
