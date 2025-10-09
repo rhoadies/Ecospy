@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useRoomSync } from '../../context/RoomSyncContext'
 import { useGame } from '../../context/GameContext'
@@ -6,7 +6,8 @@ import { useGame } from '../../context/GameContext'
 // Salle 2 : Memory Game - Pollution Océanique
 export default function Room2({ onSubmit }) {
   const { syncRoomState, subscribeToRoomState, getRoomState, initializeRoomState } = useRoomSync()
-  const { roomCode } = useGame()
+  const { roomCode, currentRoom } = useGame()
+  const initializedRef = useRef(false)
   const [cards, setCards] = useState([])
   const [flipped, setFlipped] = useState([])
   const [matched, setMatched] = useState([])
@@ -31,17 +32,31 @@ export default function Room2({ onSubmit }) {
     { id: 16, type: 'time', value: '500 ans', icon: '⏰', info: 'Couche bébé' },
   ]
 
+  // Réinitialiser complètement l'état quand on entre dans la salle 2
   useEffect(() => {
-    // Vérifier s'il y a déjà un état synchronisé
+    if (currentRoom === 2) {
+      // Réinitialiser l'état de jeu local
+      setFlipped([])
+      setMatched([])
+      setMoves(0)
+      initializedRef.current = false
+    } else {
+      // Nettoyer l'état quand on quitte la salle 2
+      setFlipped([])
+      setMatched([])
+      setMoves(0)
+    }
+  }, [currentRoom])
+
+  useEffect(() => {
+    // Vérifier s'il y a déjà des cartes synchronisées
     const existingState = getRoomState(2)
     
-    if (existingState) {
-      // Utiliser l'état existant
+    if (existingState && existingState.cards && !initializedRef.current) {
+      // Utiliser les cartes existantes
       setCards(existingState.cards)
-      setFlipped(existingState.flipped || [])
-      setMatched(existingState.matched || [])
-      setMoves(existingState.moves || 0)
-    } else {
+      initializedRef.current = true
+    } else if (!initializedRef.current) {
       // Initialiser avec un mélange aléatoire mais déterministe
       // Utiliser une graine basée sur le code de la room pour que tous les joueurs aient le même mélange
       const seed = roomCode ? roomCode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 12345
@@ -62,15 +77,17 @@ export default function Room2({ onSubmit }) {
       
       setCards(shuffled)
       initializeRoomState(2, initialState)
+      initializedRef.current = true
     }
-  }, [roomCode])
+  }, [roomCode, currentRoom])
 
   // Synchroniser seulement les cartes (pas l'état de jeu)
   useEffect(() => {
     const unsubscribe = subscribeToRoomState(2, (stateData) => {
-      if (stateData && stateData.cards) {
+      if (stateData && stateData.cards && !initializedRef.current) {
         // Ne synchroniser que les cartes, pas l'état de jeu
         setCards(stateData.cards)
+        initializedRef.current = true
       }
     })
 
@@ -80,8 +97,6 @@ export default function Room2({ onSubmit }) {
   // Logique de vérification des paires (local uniquement)
   useEffect(() => {
     if (flipped.length === 2) {
-      const newMoves = moves + 1
-      setMoves(newMoves)
       const [first, second] = flipped
       const firstCard = cards[first]
       const secondCard = cards[second]
@@ -91,16 +106,19 @@ export default function Room2({ onSubmit }) {
         (firstCard.type === 'waste' && secondCard.type === 'time' && firstCard.info === secondCard.value) ||
         (firstCard.type === 'time' && secondCard.type === 'waste' && firstCard.info === secondCard.value)
       ) {
-        const newMatched = [...matched, first, second]
-        setMatched(newMatched)
+        // Paire trouvée
+        setMoves(prevMoves => prevMoves + 1)
+        setMatched(prevMatched => [...prevMatched, first, second])
         setFlipped([])
       } else {
+        // Pas une paire
+        setMoves(prevMoves => prevMoves + 1)
         setTimeout(() => {
           setFlipped([])
         }, 1000)
       }
     }
-  }, [flipped, cards, matched, moves])
+  }, [flipped, cards])
 
   useEffect(() => {
     // Vérifier si toutes les paires sont trouvées
