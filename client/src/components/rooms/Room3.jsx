@@ -469,16 +469,17 @@ export default function Room3({ onSubmit }) {
     ))}
   </div>
 
-                <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
-                  <p className="text-blue-400 text-sm">
-                    <strong>Astuce :</strong> Utilisez cette carte pour identifier les régions mentionnées 
-                    dans les indices partagés par votre équipe !
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+  <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
+    <p className="text-blue-400 text-sm">
+      <strong>Astuce :</strong> Utilisez cette carte pour identifier les régions mentionnées 
+      dans les indices partagés par votre équipe !
+    </p>
+  </div>
+</div>
+</motion.div>
+</motion.div>
+)}
+</AnimatePresence>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Panneau des indices */}
