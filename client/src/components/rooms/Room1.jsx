@@ -121,9 +121,36 @@ export default function Room1({ onSubmit }) {
   
   // Indices à afficher quand les bonnes réponses sont sélectionnées
   const clues = [
-    { icon: '🚗', text: 'Le transport écologique émet 0g de CO₂', value: 0 },
-    { icon: '🍽️', text: 'L\'alimentation locale émet 40g de CO₂', value: 40 },
-    { icon: '⚡', text: 'L\'énergie solaire émet 40g de CO₂', value: 40 }
+    { 
+      icon: '🚗', 
+      category: 'Transport écologique',
+      riddle: [
+        'Je suis le seul nombre qui, quand on me sert pour additionner, ne change rien.',
+        'Si tu me multiplies par n\'importe quel nombre, je disparais.',
+        'Je ne suis ni positif ni négatif, mais je suis pair.'
+      ],
+      value: 0 
+    },
+    { 
+      icon: '🍽️', 
+      category: 'Alimentation locale',
+      riddle: [
+        'Je suis un nombre pair, multiple de 4 et inférieur à 50.',
+        'La somme de mes chiffres vaut 4.',
+        'J\'ai exactement 8 diviseurs positifs.'
+      ],
+      value: 40 
+    },
+    { 
+      icon: '⚡', 
+      category: 'Énergie solaire',
+      riddle: [
+        'Dans une écriture, je suis 101000.',
+        'Dans une autre (ancienne), on m\'écrit XL.',
+        'Si tu me multiplies par moi-même, tu obtiens 1600.'
+      ],
+      value: 40 
+    }
   ]
 
   return (
@@ -210,23 +237,32 @@ export default function Room1({ onSubmit }) {
                   </p>
                 </div>
 
-                <div className="grid gap-3 mb-6">
+                <div className="grid gap-4 mb-6">
                   {clues.map((clue, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.2 }}
-                      className="bg-primary/10 border border-primary rounded-lg p-4"
+                      transition={{ delay: index * 0.3 }}
+                      className="bg-primary/10 border border-primary rounded-lg p-5"
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="text-3xl">{clue.icon}</span>
+                      <div className="flex items-start gap-4 mb-3">
+                        <span className="text-4xl">{clue.icon}</span>
                         <div className="flex-1">
-                          <p className="text-white font-medium">{clue.text}</p>
+                          <h4 className="text-white font-bold text-lg mb-2">{clue.category}</h4>
+                          <p className="text-gray-400 text-sm mb-2">Émissions de CO₂ en grammes :</p>
                         </div>
-                        <div className="text-2xl font-bold text-primary">
-                          {clue.value}g
-                        </div>
+                      </div>
+                      <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
+                        <p className="text-yellow-400 font-semibold mb-2">🧩 Devinette :</p>
+                        <ul className="space-y-1.5">
+                          {clue.riddle.map((line, i) => (
+                            <li key={i} className="text-gray-300 text-sm flex items-start gap-2">
+                              <span className="text-primary">•</span>
+                              <span>{line}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </motion.div>
                   ))}
@@ -234,8 +270,8 @@ export default function Room1({ onSubmit }) {
 
                 <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4 mb-6">
                   <p className="text-blue-400 text-sm">
-                    💡 <strong>Calcul :</strong> Additionnez les trois valeurs ci-dessus pour obtenir 
-                    l'empreinte carbone totale en grammes de CO₂.
+                    💡 <strong>Calcul :</strong> Résolvez les trois devinettes pour trouver les nombres, 
+                    puis additionnez-les pour obtenir le code d'accès (empreinte carbone totale en grammes de CO₂).
                   </p>
                 </div>
               </div>
