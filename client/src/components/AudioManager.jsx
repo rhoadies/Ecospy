@@ -1,10 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { useVoice } from '../context/VoiceContext'
+import { useGame } from '../context/GameContext'
 
 // Composant invisible qui gère la lecture audio
 export default function AudioManager() {
   const { peers } = useVoice()
+  const { gameResult } = useGame()
   const audioElements = useRef({})
+  const victoryAudioRef = useRef(null)
 
   // Expose a global helper to resume audio on user gesture
   useEffect(() => {
@@ -75,6 +78,41 @@ export default function AudioManager() {
       }
     })
   }, [peers])
+
+  // Musique de victoire
+  useEffect(() => {
+    if (gameResult && gameResult.success !== false) {
+      // Créer un son de victoire simple avec Web Audio API
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+      
+      // Créer une mélodie de victoire simple
+      const playVictorySound = () => {
+        const notes = [523.25, 659.25, 783.99, 1046.50] // C5, E5, G5, C6
+        const duration = 0.3
+        
+        notes.forEach((frequency, index) => {
+          setTimeout(() => {
+            const oscillator = audioContext.createOscillator()
+            const gainNode = audioContext.createGain()
+            
+            oscillator.connect(gainNode)
+            gainNode.connect(audioContext.destination)
+            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime)
+            oscillator.type = 'sine'
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime)
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration)
+            
+            oscillator.start(audioContext.currentTime)
+            oscillator.stop(audioContext.currentTime + duration)
+          }, index * 200)
+        })
+      }
+      
+      playVictorySound()
+    }
+  }, [gameResult])
 
   // Cleanup au démontage
   useEffect(() => {

@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useRoomSync } from '../../context/RoomSyncContext'
 
 // Salle 4 : Mix Énergétique Final
 export default function Room4({ onSubmit }) {
+  const { syncRoomState, subscribeToRoomState, getRoomState, initializeRoomState } = useRoomSync()
   const [energyMix, setEnergyMix] = useState({
     solaire: 0,
     eolien: 0,
@@ -58,8 +60,56 @@ export default function Room4({ onSubmit }) {
     }
   }
 
+  // Initialiser l'état synchronisé
+  useEffect(() => {
+    const existingState = getRoomState(4)
+    
+    if (existingState) {
+      setEnergyMix(existingState.energyMix || {
+        solaire: 0,
+        eolien: 0,
+        hydraulique: 0,
+        nucleaire: 0,
+        gaz: 0,
+        charbon: 0
+      })
+    } else {
+      const initialState = {
+        energyMix: {
+          solaire: 0,
+          eolien: 0,
+          hydraulique: 0,
+          nucleaire: 0,
+          gaz: 0,
+          charbon: 0
+        }
+      }
+      initializeRoomState(4, initialState)
+    }
+  }, [])
+
+  // Synchroniser les changements d'état
+  useEffect(() => {
+    const unsubscribe = subscribeToRoomState(4, (stateData) => {
+      if (stateData) {
+        setEnergyMix(stateData.energyMix || {
+          solaire: 0,
+          eolien: 0,
+          hydraulique: 0,
+          nucleaire: 0,
+          gaz: 0,
+          charbon: 0
+        })
+      }
+    })
+
+    return unsubscribe
+  }, [subscribeToRoomState])
+
   const handleSliderChange = (source, value) => {
-    setEnergyMix({ ...energyMix, [source]: parseInt(value) })
+    const newEnergyMix = { ...energyMix, [source]: parseInt(value) }
+    setEnergyMix(newEnergyMix)
+    syncRoomState(4, { energyMix: newEnergyMix })
   }
 
   const getTotalPercentage = () => {
@@ -225,7 +275,11 @@ export default function Room4({ onSubmit }) {
                     }}
                   />
                   <button
-                    onClick={() => setEnergyMix({ ...energyMix, [key]: 0 })}
+                    onClick={() => {
+                      const newEnergyMix = { ...energyMix, [key]: 0 }
+                      setEnergyMix(newEnergyMix)
+                      syncRoomState(4, { energyMix: newEnergyMix })
+                    }}
                     className="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm"
                   >
                     Reset
@@ -257,7 +311,7 @@ export default function Room4({ onSubmit }) {
               <div className="text-center mb-4">
                 <p className="text-gray-400 mb-2">Code final (% d'énergies renouvelables) :</p>
                 <div className={`text-5xl font-bold ${
-                  meetsRenewables ? 'text-primary' : 'text-yellow-500'
+                  canSubmit ? 'text-primary' : 'text-yellow-500'
                 }`}>
                   {renewablePercentage}%
                 </div>

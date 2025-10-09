@@ -131,7 +131,7 @@ export class GameManager {
     return {
       success: true,
       finalTime: totalTime,
-      maxTime: 600, // 10 minutes
+      maxTime: 1200, // 20 minutes
       players: room.players,
       solvedPuzzles: room.solvedPuzzles
     };

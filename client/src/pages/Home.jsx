@@ -90,7 +90,7 @@ export default function Home() {
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
               Infiltrez la base d'une méga-corporation qui cache des données sur la pollution. 
-              4 salles, 4 énigmes, 10 minutes pour sauver la planète !
+              4 salles, 4 énigmes, 20 minutes pour sauver la planète !
             </p>
           </motion.div>
 
@@ -146,7 +146,7 @@ export default function Home() {
                 <h4 className="font-semibold text-primary mb-2">ℹ️ Informations</h4>
                 <ul className="text-sm text-gray-400 space-y-1">
                   <li>• 1 à 4 joueurs</li>
-                  <li>• Durée : 10 minutes</li>
+                  <li>• Durée : 20 minutes</li>
                   <li>• Coopération requise</li>
                   <li>• Thème : Environnement</li>
                 </ul>

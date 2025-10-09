@@ -12,7 +12,7 @@ export default function CanvasDeck() {
         "Lobby: créer/rejoindre une partie, chat temps réel",
         "Salles (1→4): énigmes coopératives synchronisées via Socket.IO",
         "Validation serveur: logique de jeu et passage de salle",
-        "Timer global: 10 minutes, progression et débrief final"
+        "Timer global: 20 minutes, progression et débrief final"
       ]
     },
     {
@@ -149,5 +149,6 @@ export default function CanvasDeck() {
     </div>
   )
 }
+
 
 

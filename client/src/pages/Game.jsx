@@ -23,7 +23,8 @@ export default function Game() {
     gameStarted, 
     setGameResult,
     playerName,
-    addMessage
+    addMessage,
+    resetGame
   } = useGame()
 
   const [showChat, setShowChat] = useState(false)
@@ -126,6 +127,7 @@ export default function Game() {
 
   const handleQuit = () => {
     if (window.confirm('Êtes-vous sûr de vouloir quitter la partie ? Votre progression sera perdue.')) {
+      resetGame()
       navigate('/')
     }
   }
@@ -176,7 +178,7 @@ export default function Game() {
           </div>
 
           {/* Timer */}
-          <Timer maxTime={600} />
+          <Timer maxTime={1200} />
 
           {/* Actions */}
           <div className="flex items-center gap-2">

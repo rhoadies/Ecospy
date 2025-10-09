@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
         startTime: room.startTime,
         currentRoom: room.currentRoom
       });
-      console.log(`🚀 Partie ${roomCode} démarrée!`);
+      console.log(`Partie ${roomCode} démarrée!`);
     }
   });
 
@@ -140,6 +140,23 @@ io.on('connection', (socket) => {
   // Aide pour énigme coopérative (Salle 3)
   socket.on('share-clue', ({ roomCode, playerId, clueData }) => {
     socket.to(roomCode).emit('clue-shared', { playerId, clueData });
+  });
+
+  // Synchronisation d'état des salles
+  socket.on('room-state-update', ({ roomCode, roomNumber, stateData }) => {
+    // Diffuser l'état à tous les joueurs de la salle
+    io.to(roomCode).emit('room-state-sync', {
+      roomNumber,
+      stateData,
+      fromPlayer: socket.id
+    });
+  });
+
+  // Demande de synchronisation d'état
+  socket.on('request-room-state', ({ roomCode, roomNumber }) => {
+    // Pour l'instant, on ne stocke pas l'état côté serveur
+    // On pourrait l'ajouter si nécessaire
+    socket.emit('room-state-requested', { roomNumber });
   });
 
   // Voice chat features removed

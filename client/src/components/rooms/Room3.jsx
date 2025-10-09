@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useSocket } from '../../context/SocketContext'
 import { useGame } from '../../context/GameContext'
+import { useRoomSync } from '../../context/RoomSyncContext'
 import toast from 'react-hot-toast'
 
 // Salle 3 : Énigme Coopérative - Carte de Déforestation
 export default function Room3({ onSubmit }) {
   const { socket } = useSocket()
   const { roomCode, room } = useGame()
+  const { syncRoomState, subscribeToRoomState, getRoomState, initializeRoomState } = useRoomSync()
   const [selectedRegion, setSelectedRegion] = useState('')
   const [sharedClues, setSharedClues] = useState([])
   const [myClue, setMyClue] = useState(null)
@@ -93,6 +95,37 @@ export default function Room3({ onSubmit }) {
     ]
   }
 
+  // Initialiser l'état synchronisé
+  useEffect(() => {
+    const existingState = getRoomState(3)
+    
+    if (existingState) {
+      setSelectedRegion(existingState.selectedRegion || '')
+      setSharedClues(existingState.sharedClues || [])
+      setStage(existingState.stage || 0)
+    } else {
+      const initialState = {
+        selectedRegion: '',
+        sharedClues: [],
+        stage: 0
+      }
+      initializeRoomState(3, initialState)
+    }
+  }, [])
+
+  // Synchroniser les changements d'état
+  useEffect(() => {
+    const unsubscribe = subscribeToRoomState(3, (stateData) => {
+      if (stateData) {
+        setSelectedRegion(stateData.selectedRegion || '')
+        setSharedClues(stateData.sharedClues || [])
+        setStage(stateData.stage || 0)
+      }
+    })
+
+    return unsubscribe
+  }, [subscribeToRoomState])
+
   useEffect(() => {
     // Give a clue for the current target region
     const target = targetOrder[stage]
@@ -121,7 +154,15 @@ export default function Room3({ onSubmit }) {
         playerId: socket.id,
         clueData: myClue.text
       })
-      setSharedClues(prev => [...prev, myClue.text])
+      const newSharedClues = [...sharedClues, myClue.text]
+      setSharedClues(newSharedClues)
+      
+      // Synchroniser l'état
+      syncRoomState(3, {
+        selectedRegion,
+        sharedClues: newSharedClues,
+        stage
+      })
     }
   }
 
@@ -137,12 +178,22 @@ export default function Room3({ onSubmit }) {
         onSubmit('amazonie') // final answer to server stays consistent
       } else {
         toast.success('Correct ! Passez à la région suivante.')
-        setStage(nextStage)
-        setSelectedRegion('')
-        setSharedClues([])
+        const newStage = nextStage
+        const newSelectedRegion = ''
+        const newSharedClues = []
+        setStage(newStage)
+        setSelectedRegion(newSelectedRegion)
+        setSharedClues(newSharedClues)
+        
+        // Synchroniser l'état
+        syncRoomState(3, {
+          selectedRegion: newSelectedRegion,
+          sharedClues: newSharedClues,
+          stage: newStage
+        })
       }
     } else {
-      toast.error('Ce n’est pas la bonne région. Réessayez.')
+      toast.error('Ce n'est pas la bonne région. Réessayez.')
     }
   }
 
@@ -247,7 +298,15 @@ export default function Room3({ onSubmit }) {
                         name="region"
                         value={region.id}
                         checked={selectedRegion === region.id}
-                        onChange={(e) => setSelectedRegion(e.target.value)}
+                        onChange={(e) => {
+                          const newSelectedRegion = e.target.value
+                          setSelectedRegion(newSelectedRegion)
+                          syncRoomState(3, {
+                            selectedRegion: newSelectedRegion,
+                            sharedClues,
+                            stage
+                          })
+                        }}
                         className="sr-only"
                       />
                       <div className="flex items-center gap-4">

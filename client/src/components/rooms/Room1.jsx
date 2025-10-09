@@ -1,102 +1,170 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useRoomSync } from '../../context/RoomSyncContext'
 
-// Salle 1 : 3 catégories (Transport, Énergie, Alimentation) – choisir la meilleure de chaque
+// Salle 1 : Empreinte Carbone - Le Mot de Passe
 export default function Room1({ onSubmit }) {
-  const [selected, setSelected] = useState({ transport: '', energy: '', food: '' })
+  const { syncRoomState, subscribeToRoomState, getRoomState, initializeRoomState } = useRoomSync()
+  const [selectedActions, setSelectedActions] = useState({
+    transport: '',
+    food: '',
+    energy: ''
+  })
   const [answer, setAnswer] = useState('')
 
-  const categories = {
+  const actions = {
     transport: {
-      title: '🚗 Transport',
+      title: '🚗 Transport quotidien',
       options: {
-        velo: { label: 'Vélo (50km)', co2: 0 },
-        train: { label: 'Train (50km)', co2: 20 },
         voiture: { label: 'Voiture essence (50km)', co2: 1200 },
-        avion: { label: 'Avion court-courrier (50km)', co2: 1400 }
-      }
-    },
-    energy: {
-      title: '⚡ Énergie',
-      options: {
-        solaire: { label: 'Électricité solaire (10kWh)', co2: 40 },
-        nucleaire: { label: 'Électricité nucléaire (10kWh)', co2: 60 },
-        gaz: { label: 'Chauffage gaz naturel (10kWh)', co2: 480 },
-        charbon: { label: 'Électricité charbon (10kWh)', co2: 920 }
+        train: { label: 'Train (50km)', co2: 20 },
+        avion: { label: 'Avion court-courrier (50km)', co2: 1400 },
+        velo: { label: 'Vélo (50km)', co2: 0 }
       }
     },
     food: {
       title: '🍽️ Alimentation',
       options: {
-        local: { label: 'Légumes locaux', co2: 40 },
-        legumes: { label: 'Repas végétarien', co2: 80 },
+        boeuf: { label: 'Steak de bœuf (200g)', co2: 800 },
         poulet: { label: 'Poulet (200g)', co2: 260 },
-        boeuf: { label: 'Steak de bœuf (200g)', co2: 800 }
+        legumes: { label: 'Repas végétarien', co2: 80 },
+        local: { label: 'Légumes locaux', co2: 40 }
+      }
+    },
+    energy: {
+      title: '⚡ Énergie domestique',
+      options: {
+        charbon: { label: 'Électricité charbon (10kWh)', co2: 920 },
+        gaz: { label: 'Chauffage gaz naturel (10kWh)', co2: 480 },
+        nucleaire: { label: 'Électricité nucléaire (10kWh)', co2: 60 },
+        solaire: { label: 'Panneaux solaires (10kWh)', co2: 40 }
       }
     }
   }
 
-  const isComplete = selected.transport && selected.energy && selected.food
+  // Initialiser l'état synchronisé
+  useEffect(() => {
+    const existingState = getRoomState(1)
+    
+    if (existingState) {
+      setSelectedActions(existingState.selectedActions || {
+        transport: '',
+        food: '',
+        energy: ''
+      })
+      setAnswer(existingState.answer || '')
+    } else {
+      const initialState = {
+        selectedActions: {
+          transport: '',
+          food: '',
+          energy: ''
+        },
+        answer: ''
+      }
+      initializeRoomState(1, initialState)
+    }
+  }, [])
 
-  const handleChange = (category, value) => {
-    setSelected(prev => ({ ...prev, [category]: value }))
+  // Synchroniser les changements d'état
+  useEffect(() => {
+    const unsubscribe = subscribeToRoomState(1, (stateData) => {
+      if (stateData) {
+        setSelectedActions(stateData.selectedActions || {
+          transport: '',
+          food: '',
+          energy: ''
+        })
+        setAnswer(stateData.answer || '')
+      }
+    })
+
+    return unsubscribe
+  }, [subscribeToRoomState])
+
+  const calculateTotal = () => {
+    let total = 0
+    if (selectedActions.transport) {
+      total += actions.transport.options[selectedActions.transport].co2
+    }
+    if (selectedActions.food) {
+      total += actions.food.options[selectedActions.food].co2
+    }
+    if (selectedActions.energy) {
+      total += actions.energy.options[selectedActions.energy].co2
+    }
+    return total
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    onSubmit(answer)
+    const total = calculateTotal()
+    onSubmit(answer || total)
   }
+
+  const total = calculateTotal()
+  const isComplete = selectedActions.transport && selectedActions.food && selectedActions.energy
 
   return (
     <div className="max-w-5xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card p-4 md:p-6"
+        className="card"
       >
         {/* Header */}
-        <div className="mb-4">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-3xl md:text-4xl">🔐</span>
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-5xl">🔐</span>
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-primary">Salle 1 : Empreinte Carbone</h2>
-              <p className="text-gray-400 text-sm md:text-base">Choisissez 1 option dans chaque catégorie, puis entrez le total (g CO₂)</p>
+              <h2 className="text-3xl font-bold text-primary">Salle 1 : Empreinte Carbone</h2>
+              <p className="text-gray-400">Calculez l'empreinte carbone pour trouver le code</p>
             </div>
           </div>
-
-          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-3">
-            <p className="text-yellow-400 text-sm">
-              📋 <strong>Mission :</strong> Sélectionnez la <strong>meilleure option</strong> (la plus sobre en CO₂)
-              dans chaque catégorie <strong>(Transport, Énergie, Alimentation)</strong>. Les quantités de CO₂ ne sont
-              <strong> pas affichées</strong>. Calculez ensuite le <strong>total en grammes</strong> et entrez-le comme code.
+          
+          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-4">
+            <p className="text-yellow-400">
+              📋 <strong>Mission :</strong> Les agents de la corporation ont laissé des traces. 
+              Calculez l'empreinte carbone de leurs activités quotidiennes. Le total (en grammes de CO2) est le code d'accès !
             </p>
           </div>
         </div>
 
-        {/* Catégories */}
-        <div className="grid md:grid-cols-3 gap-3 md:gap-4 mb-4">
-          {Object.entries(categories).map(([catKey, cat]) => (
-            <div key={catKey} className="bg-gray-900 rounded-lg p-3 border border-gray-700">
-              <h3 className="text-lg md:text-xl font-semibold mb-3">{cat.title}</h3>
-              <div className="space-y-2.5">
-                {Object.entries(cat.options).map(([optKey, opt]) => (
+        {/* Sélection des actions */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {Object.entries(actions).map(([key, category]) => (
+            <div key={key} className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+              <h3 className="text-xl font-semibold mb-4">{category.title}</h3>
+              <div className="space-y-2">
+                {Object.entries(category.options).map(([optionKey, option]) => (
                   <label
-                    key={optKey}
-                    className={`block p-2.5 rounded-lg cursor-pointer transition-all border-2 ${
-                      selected[catKey] === optKey ? 'bg-primary/20 border-primary' : 'bg-gray-800 border-transparent hover:border-gray-600'
+                    key={optionKey}
+                    className={`block p-3 rounded-lg cursor-pointer transition-all border-2 ${
+                      selectedActions[key] === optionKey
+                        ? 'bg-primary/20 border-primary'
+                        : 'bg-gray-800 border-transparent hover:border-gray-600'
                     }`}
                   >
                     <input
                       type="radio"
-                      name={catKey}
-                      value={optKey}
-                      checked={selected[catKey] === optKey}
-                      onChange={(e) => handleChange(catKey, e.target.value)}
+                      name={key}
+                      value={optionKey}
+                      checked={selectedActions[key] === optionKey}
+                      onChange={(e) => {
+                        const newSelectedActions = { ...selectedActions, [key]: e.target.value }
+                        setSelectedActions(newSelectedActions)
+                        syncRoomState(1, {
+                          selectedActions: newSelectedActions,
+                          answer
+                        })
+                      }}
                       className="mr-3"
                     />
                     <div className="inline">
-                      <div className="font-medium text-sm md:text-base">{opt.label}</div>
-                      {/* CO₂ hidden by design */}
+                      <div className="font-medium">{option.label}</div>
+                      <div className="text-sm text-gray-400">
+                        {option.co2}g CO₂
+                      </div>
                     </div>
                   </label>
                 ))}
@@ -105,50 +173,62 @@ export default function Room1({ onSubmit }) {
           ))}
         </div>
 
-        {/* Saisie du total */}
-        {isComplete ? (
+        {/* Résultat et soumission */}
+        {isComplete && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 rounded-lg p-4 md:p-5 border-2 border-primary"
+            className="bg-gray-900 rounded-lg p-6 border-2 border-primary"
           >
-            {/* Récapitulatif des choix avec CO2 affiché par option, sans total */}
-            <div className="grid md:grid-cols-3 gap-3 mb-4">
-              {Object.entries(categories).map(([catKey, cat]) => {
-                const optKey = selected[catKey]
-                const opt = cat.options[optKey]
-                return (
-                  <div key={catKey} className="p-3 rounded-lg bg-gray-800 border border-gray-700">
-                    <div className="text-xs text-gray-400 mb-1">{cat.title}</div>
-                    <div className="font-semibold text-sm md:text-base">{opt?.label || '—'}</div>
-                    {opt && (
-                      <div className="text-xs text-gray-400 mt-1">{opt.co2} g CO₂</div>
-                    )}
-                  </div>
-                )
-              })}
+            <div className="text-center mb-6">
+              <p className="text-gray-400 mb-2">Empreinte carbone totale calculée :</p>
+              <div className="text-5xl font-bold text-primary">
+                {total}g CO₂
+              </div>
+              <p className="text-sm text-gray-500 mt-2">
+                Soit {(total / 1000).toFixed(2)} kg de CO₂ pour une seule journée
+              </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4 mb-6">
+              <p className="text-blue-400 text-sm">
+                💡 <strong>Info pédagogique :</strong> En France, l'empreinte carbone moyenne est de 
+                ~10 tonnes de CO₂ par an et par personne. L'objectif pour limiter le réchauffement 
+                climatique à 1,5°C est de descendre à 2 tonnes par an d'ici 2050.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Code d'accès (total en g CO₂)</label>
+                <label className="block text-sm font-medium mb-2">
+                  Entrez le code d'accès (empreinte totale en grammes) :
+                </label>
                 <input
                   type="text"
                   value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
-                  placeholder="Ex: 180"
-                  className="input text-center text-xl md:text-2xl"
+                  onChange={(e) => {
+                    const newAnswer = e.target.value
+                    setAnswer(newAnswer)
+                    syncRoomState(1, {
+                      selectedActions,
+                      answer: newAnswer
+                    })
+                  }}
+                  placeholder={`Ex: ${total}`}
+                  className="input text-center text-2xl"
                 />
               </div>
 
-              <button type="submit" className="w-full btn-primary py-3 md:py-4 text-lg">
+              <button type="submit" className="w-full btn-primary py-4 text-lg">
                 🔓 Valider le code
               </button>
             </form>
           </motion.div>
-        ) : (
-          <div className="text-center text-gray-500 py-4">
-            <p className="text-sm">Sélectionnez 1 option dans chaque catégorie pour continuer.</p>
+        )}
+
+        {!isComplete && (
+          <div className="text-center text-gray-500 py-8">
+            <p>Sélectionnez une option dans chaque catégorie pour calculer l'empreinte carbone</p>
           </div>
         )}
       </motion.div>

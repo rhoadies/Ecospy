@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useRoomSync } from '../../context/RoomSyncContext'
 
 // Salle 2 : Memory Game - Pollution Océanique
 export default function Room2({ onSubmit }) {
+  const { syncRoomState, subscribeToRoomState, getRoomState, initializeRoomState } = useRoomSync()
   const [cards, setCards] = useState([])
   const [flipped, setFlipped] = useState([])
   const [matched, setMatched] = useState([])
@@ -28,14 +30,56 @@ export default function Room2({ onSubmit }) {
   ]
 
   useEffect(() => {
-    // Mélanger les cartes au début
-    const shuffled = [...cardPairs].sort(() => Math.random() - 0.5)
-    setCards(shuffled)
+    // Vérifier s'il y a déjà un état synchronisé
+    const existingState = getRoomState(2)
+    
+    if (existingState) {
+      // Utiliser l'état existant
+      setCards(existingState.cards)
+      setFlipped(existingState.flipped || [])
+      setMatched(existingState.matched || [])
+      setMoves(existingState.moves || 0)
+    } else {
+      // Initialiser avec un état aléatoire mais déterministe
+      // Utiliser une graine basée sur le timestamp pour que tous les joueurs aient le même mélange
+      const seed = Math.floor(Date.now() / 1000) // Graine basée sur les secondes
+      const shuffled = [...cardPairs].sort((a, b) => {
+        // Fonction de mélange déterministe basée sur la graine
+        const hashA = (a.id * seed) % 1000
+        const hashB = (b.id * seed) % 1000
+        return hashA - hashB
+      })
+      
+      const initialState = {
+        cards: shuffled,
+        flipped: [],
+        matched: [],
+        moves: 0
+      }
+      
+      setCards(shuffled)
+      initializeRoomState(2, initialState)
+    }
   }, [])
+
+  // Synchroniser les changements d'état
+  useEffect(() => {
+    const unsubscribe = subscribeToRoomState(2, (stateData) => {
+      if (stateData) {
+        setCards(stateData.cards || [])
+        setFlipped(stateData.flipped || [])
+        setMatched(stateData.matched || [])
+        setMoves(stateData.moves || 0)
+      }
+    })
+
+    return unsubscribe
+  }, [subscribeToRoomState])
 
   useEffect(() => {
     if (flipped.length === 2) {
-      setMoves(moves + 1)
+      const newMoves = moves + 1
+      setMoves(newMoves)
       const [first, second] = flipped
       const firstCard = cards[first]
       const secondCard = cards[second]
@@ -45,13 +89,31 @@ export default function Room2({ onSubmit }) {
         (firstCard.type === 'waste' && secondCard.type === 'time' && firstCard.info === secondCard.value) ||
         (firstCard.type === 'time' && secondCard.type === 'waste' && firstCard.info === secondCard.value)
       ) {
-        setMatched([...matched, first, second])
+        const newMatched = [...matched, first, second]
+        setMatched(newMatched)
         setFlipped([])
+        
+        // Synchroniser l'état
+        syncRoomState(2, {
+          cards,
+          flipped: [],
+          matched: newMatched,
+          moves: newMoves
+        })
       } else {
-        setTimeout(() => setFlipped([]), 1000)
+        setTimeout(() => {
+          setFlipped([])
+          // Synchroniser l'état après le timeout
+          syncRoomState(2, {
+            cards,
+            flipped: [],
+            matched,
+            moves: newMoves
+          })
+        }, 1000)
       }
     }
-  }, [flipped])
+  }, [flipped, cards, matched, moves, syncRoomState])
 
   useEffect(() => {
     // Vérifier si toutes les paires sont trouvées
@@ -66,7 +128,16 @@ export default function Room2({ onSubmit }) {
     if (flipped.length === 2 || flipped.includes(index) || matched.includes(index)) {
       return
     }
-    setFlipped([...flipped, index])
+    const newFlipped = [...flipped, index]
+    setFlipped(newFlipped)
+    
+    // Synchroniser l'état immédiatement
+    syncRoomState(2, {
+      cards,
+      flipped: newFlipped,
+      matched,
+      moves
+    })
   }
 
   return (
