@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm run build",
-  "installCommand": "npm ci || npm install",
-  "outputDirectory": "client/dist",
+  "buildCommand": "cd escaep-game && npm run build",
+  "installCommand": "cd escaep-game && npm ci || cd escaep-game && npm install",
+  "outputDirectory": "escaep-game/client/dist",
   "framework": "vite",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
