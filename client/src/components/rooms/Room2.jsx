@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useRoomSync } from '../../context/RoomSyncContext'
+import { useGame } from '../../context/GameContext'
 
 // Salle 2 : Memory Game - Pollution Océanique
 export default function Room2({ onSubmit }) {
   const { syncRoomState, subscribeToRoomState, getRoomState, initializeRoomState } = useRoomSync()
+  const { roomCode } = useGame()
   const [cards, setCards] = useState([])
   const [flipped, setFlipped] = useState([])
   const [matched, setMatched] = useState([])
@@ -40,15 +42,16 @@ export default function Room2({ onSubmit }) {
       setMatched(existingState.matched || [])
       setMoves(existingState.moves || 0)
     } else {
-      // Initialiser avec un état aléatoire mais déterministe
-      // Utiliser une graine basée sur le timestamp pour que tous les joueurs aient le même mélange
-      const seed = Math.floor(Date.now() / 1000) // Graine basée sur les secondes
-      const shuffled = [...cardPairs].sort((a, b) => {
-        // Fonction de mélange déterministe basée sur la graine
-        const hashA = (a.id * seed) % 1000
-        const hashB = (b.id * seed) % 1000
-        return hashA - hashB
-      })
+      // Initialiser avec un mélange aléatoire mais déterministe
+      // Utiliser une graine basée sur le code de la room pour que tous les joueurs aient le même mélange
+      const seed = roomCode ? roomCode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 12345
+      
+      // Fonction de mélange Fisher-Yates avec graine déterministe
+      const shuffled = [...cardPairs]
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor((seed * (i + 1) * 7) % (i + 1))
+        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+      }
       
       const initialState = {
         cards: shuffled,
@@ -60,32 +63,21 @@ export default function Room2({ onSubmit }) {
       setCards(shuffled)
       initializeRoomState(2, initialState)
     }
-  }, [])
+  }, [roomCode])
 
-  // Synchroniser les changements d'état (sans créer de boucles)
+  // Synchroniser seulement les cartes (pas l'état de jeu)
   useEffect(() => {
     const unsubscribe = subscribeToRoomState(2, (stateData) => {
-      if (stateData) {
-        // Ne synchroniser que si l'état est différent pour éviter les boucles
-        if (JSON.stringify(stateData.cards) !== JSON.stringify(cards)) {
-          setCards(stateData.cards || [])
-        }
-        if (JSON.stringify(stateData.flipped) !== JSON.stringify(flipped)) {
-          setFlipped(stateData.flipped || [])
-        }
-        if (JSON.stringify(stateData.matched) !== JSON.stringify(matched)) {
-          setMatched(stateData.matched || [])
-        }
-        if (stateData.moves !== moves) {
-          setMoves(stateData.moves || 0)
-        }
+      if (stateData && stateData.cards) {
+        // Ne synchroniser que les cartes, pas l'état de jeu
+        setCards(stateData.cards)
       }
     })
 
     return unsubscribe
-  }, [subscribeToRoomState, cards, flipped, matched, moves])
+  }, [subscribeToRoomState])
 
-  // Logique de vérification des paires avec synchronisation différée
+  // Logique de vérification des paires (local uniquement)
   useEffect(() => {
     if (flipped.length === 2) {
       const newMoves = moves + 1
@@ -102,32 +94,13 @@ export default function Room2({ onSubmit }) {
         const newMatched = [...matched, first, second]
         setMatched(newMatched)
         setFlipped([])
-        
-        // Synchroniser après la mise à jour de l'état
-        setTimeout(() => {
-          syncRoomState(2, {
-            cards,
-            flipped: [],
-            matched: newMatched,
-            moves: newMoves
-          })
-        }, 100)
       } else {
         setTimeout(() => {
           setFlipped([])
-          // Synchroniser après le timeout
-          setTimeout(() => {
-            syncRoomState(2, {
-              cards,
-              flipped: [],
-              matched,
-              moves: newMoves
-            })
-          }, 100)
         }, 1000)
       }
     }
-  }, [flipped, cards, matched, moves, syncRoomState])
+  }, [flipped, cards, matched, moves])
 
   useEffect(() => {
     // Vérifier si toutes les paires sont trouvées
@@ -144,14 +117,6 @@ export default function Room2({ onSubmit }) {
     }
     const newFlipped = [...flipped, index]
     setFlipped(newFlipped)
-    
-    // Synchroniser seulement le clic, pas toute la logique de jeu
-    syncRoomState(2, {
-      cards,
-      flipped: newFlipped,
-      matched,
-      moves
-    })
   }
 
   return (
