@@ -300,28 +300,174 @@ export default function Room3({ onSubmit }) {
                 </div>
 
                 <div className="bg-gray-800 rounded-lg p-6 mb-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {regions.map((region) => (
-                      <div
-                        key={region.id}
-                        className="bg-gray-700 rounded-lg p-4 border-2 border-gray-600"
-                      >
-                        <div className="flex items-start gap-3">
-                          <span className="text-4xl">{region.icon}</span>
-                          <div className="flex-1">
-                            <h4 className="text-lg font-bold text-white mb-1">{region.name}</h4>
-                            <p className="text-sm text-gray-300 mb-2">{region.location}</p>
-                            <div className="bg-red-500/20 border border-red-500 rounded px-2 py-1 inline-block">
-                              <span className="text-red-400 text-xs font-semibold">
-                                🌳 {region.hectares}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                  {/* Carte du monde SVG */}
+                  <div className="relative w-full h-96 bg-blue-900/20 rounded-lg overflow-hidden mb-4">
+                    <svg
+                      viewBox="0 0 800 400"
+                      className="w-full h-full"
+                      style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%)' }}
+                    >
+                      {/* Continents simplifiés */}
+                      {/* Amérique du Sud */}
+                      <path
+                        d="M150 200 Q180 180 200 200 Q220 250 200 300 Q180 320 150 300 Q130 280 140 250 Z"
+                        fill="#2d5a27"
+                        stroke="#1a3d1a"
+                        strokeWidth="1"
+                      />
+                      
+                      {/* Afrique */}
+                      <path
+                        d="M350 120 Q380 100 400 120 Q420 180 400 280 Q380 300 350 280 Q330 250 340 200 Z"
+                        fill="#2d5a27"
+                        stroke="#1a3d1a"
+                        strokeWidth="1"
+                      />
+                      
+                      {/* Europe */}
+                      <path
+                        d="M350 80 Q380 60 400 80 Q420 100 400 120 Q380 100 350 120 Z"
+                        fill="#2d5a27"
+                        stroke="#1a3d1a"
+                        strokeWidth="1"
+                      />
+                      
+                      {/* Asie */}
+                      <path
+                        d="M400 80 Q500 60 600 100 Q650 150 600 200 Q550 180 500 160 Q450 140 400 120 Z"
+                        fill="#2d5a27"
+                        stroke="#1a3d1a"
+                        strokeWidth="1"
+                      />
+                      
+                      {/* Océanie */}
+                      <path
+                        d="M600 250 Q650 230 680 250 Q700 280 680 320 Q650 340 600 320 Q580 300 590 270 Z"
+                        fill="#2d5a27"
+                        stroke="#1a3d1a"
+                        strokeWidth="1"
+                      />
+                      
+                      {/* Madagascar */}
+                      <ellipse
+                        cx="420"
+                        cy="280"
+                        rx="15"
+                        ry="25"
+                        fill="#2d5a27"
+                        stroke="#1a3d1a"
+                        strokeWidth="1"
+                      />
+                      
+                      {/* Points des régions */}
+                      {/* Amazonie */}
+                      <circle
+                        cx="180"
+                        cy="250"
+                        r="8"
+                        fill="#ef4444"
+                        stroke="#ffffff"
+                        strokeWidth="2"
+                      />
+                      <text x="190" y="255" fill="white" fontSize="12" fontWeight="bold">1</text>
+                      
+                      {/* Congo */}
+                      <circle
+                        cx="380"
+        cy="200"
+        r="8"
+        fill="#ef4444"
+        stroke="#ffffff"
+        strokeWidth="2"
+      />
+      <text x="390" y="205" fill="white" fontSize="12" fontWeight="bold">2</text>
+      
+      {/* Bornéo */}
+      <circle
+        cx="520"
+        cy="220"
+        r="8"
+        fill="#ef4444"
+        stroke="#ffffff"
+        strokeWidth="2"
+      />
+      <text x="530" y="225" fill="white" fontSize="12" fontWeight="bold">3</text>
+      
+      {/* Sumatra */}
+      <circle
+        cx="480"
+        cy="240"
+        r="8"
+        fill="#ef4444"
+        stroke="#ffffff"
+        strokeWidth="2"
+      />
+      <text x="490" y="245" fill="white" fontSize="12" fontWeight="bold">4</text>
+      
+      {/* Madagascar */}
+      <circle
+        cx="420"
+        cy="280"
+        r="8"
+        fill="#ef4444"
+        stroke="#ffffff"
+        strokeWidth="2"
+      />
+      <text x="430" y="285" fill="white" fontSize="12" fontWeight="bold">5</text>
+    </svg>
+    
+    {/* Légende */}
+    <div className="absolute top-4 left-4 bg-black/70 rounded-lg p-3">
+      <h4 className="text-white font-bold mb-2">🌍 Régions de déforestation</h4>
+      <div className="space-y-1 text-xs text-gray-300">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>1. Amazonie (Brésil)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>2. Congo (Afrique)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>3. Bornéo (Asie)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>4. Sumatra (Indonésie)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>5. Madagascar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  {/* Détails des régions */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {regions.map((region, index) => (
+      <div
+        key={region.id}
+        className="bg-gray-700 rounded-lg p-4 border-2 border-gray-600"
+      >
+        <div className="flex items-start gap-3">
+          <div className="flex items-center justify-center w-8 h-8 bg-red-500 rounded-full text-white font-bold text-sm">
+            {index + 1}
+          </div>
+          <div className="flex-1">
+            <h4 className="text-lg font-bold text-white mb-1">{region.name}</h4>
+            <p className="text-sm text-gray-300 mb-2">{region.location}</p>
+            <div className="bg-red-500/20 border border-red-500 rounded px-2 py-1 inline-block">
+              <span className="text-red-400 text-xs font-semibold">
+                🌳 {region.hectares}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
 
                 <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
                   <p className="text-blue-400 text-sm">
