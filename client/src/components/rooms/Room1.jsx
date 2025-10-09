@@ -214,7 +214,7 @@ export default function Room1({ onSubmit }) {
                       answer: newAnswer
                     })
                   }}
-                  placeholder={`Ex: ${total}`}
+                  placeholder="Ex: 1234"
                   className="input text-center text-2xl"
                 />
               </div>
