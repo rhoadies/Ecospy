@@ -93,6 +93,30 @@ io.on('connection', (socket) => {
     }
   });
 
+  // Rejoindre une partie publique
+  socket.on('join-public-room', ({ playerName }) => {
+    const result = gameManager.findOrCreatePublicRoom(socket.id, playerName);
+    
+    if (result.success) {
+      socket.join(result.room.code);
+      socket.emit('room-joined', result.room);
+      // Notifier tous les joueurs de la salle
+      io.to(result.room.code).emit('player-joined', {
+        players: result.room.players,
+        newPlayer: playerName
+      });
+      console.log(`🌐 ${playerName} a rejoint une partie publique ${result.room.code}`);
+    } else {
+      socket.emit('join-error', { message: result.message });
+    }
+  });
+
+  // Obtenir la liste des parties publiques
+  socket.on('get-public-rooms', () => {
+    const publicRooms = gameManager.getPublicRooms();
+    socket.emit('public-rooms-list', publicRooms);
+  });
+
   // Démarrer la partie
   socket.on('start-game', ({ roomCode }) => {
     const room = gameManager.startGame(roomCode);

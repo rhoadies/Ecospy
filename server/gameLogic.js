@@ -3,6 +3,7 @@
 export class GameManager {
   constructor() {
     this.rooms = new Map();
+    this.publicRooms = new Map(); // Rooms publiques ouvertes aux joueurs
   }
 
   // Génère un code de partie aléatoire
@@ -11,7 +12,7 @@ export class GameManager {
   }
 
   // Créer une nouvelle partie
-  createRoom(playerId, playerName) {
+  createRoom(playerId, playerName, isPublic = false) {
     const code = this.generateRoomCode();
     const room = {
       code,
@@ -25,11 +26,44 @@ export class GameManager {
       currentRoom: 1,
       startTime: null,
       endTime: null,
-      solvedPuzzles: []
+      solvedPuzzles: [],
+      isPublic: isPublic
     };
     
     this.rooms.set(code, room);
+    if (isPublic) {
+      this.publicRooms.set(code, room);
+    }
     return room;
+  }
+
+  // Trouver ou créer une room publique disponible
+  findOrCreatePublicRoom(playerId, playerName) {
+    // Chercher une room publique disponible
+    for (const [code, room] of this.publicRooms.entries()) {
+      if (room.status === 'waiting' && room.players.length < 4) {
+        return this.joinRoom(code, playerId, playerName);
+      }
+    }
+    
+    // Aucune room disponible, en créer une nouvelle
+    const room = this.createRoom(playerId, playerName, true);
+    return { success: true, room };
+  }
+
+  // Obtenir la liste des rooms publiques
+  getPublicRooms() {
+    const publicRoomsList = [];
+    for (const [code, room] of this.publicRooms.entries()) {
+      if (room.status === 'waiting') {
+        publicRoomsList.push({
+          code,
+          players: room.players.length,
+          maxPlayers: 4
+        });
+      }
+    }
+    return publicRoomsList;
   }
 
   // Rejoindre une partie existante
@@ -64,6 +98,12 @@ export class GameManager {
     
     room.status = 'playing';
     room.startTime = Date.now();
+    
+    // Retirer de la liste des rooms publiques si c'est une room publique
+    if (room.isPublic) {
+      this.publicRooms.delete(roomCode);
+    }
+    
     return room;
   }
 

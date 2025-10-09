@@ -67,6 +67,33 @@ export default function Home() {
     })
   }
 
+  const handleJoinPublicRoom = () => {
+    if (!name.trim()) {
+      toast.error('Veuillez entrer votre nom')
+      return
+    }
+
+    if (!connected) {
+      toast.error('Connexion au serveur en cours...')
+      return
+    }
+
+    setPlayerName(name)
+    
+    socket.emit('join-public-room', { playerName: name })
+    
+    socket.once('room-joined', (room) => {
+      setRoomCode(room.code)
+      setRoom(room)
+      toast.success('Lobby public rejoint !')
+      navigate('/lobby')
+    })
+
+    socket.once('join-error', (error) => {
+      toast.error(error.message)
+    })
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <motion.div 
@@ -141,6 +168,13 @@ export default function Home() {
                 👥 Rejoindre une partie
               </button>
 
+              <button
+                onClick={() => setMode('public')}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 text-lg rounded-lg transition-all duration-300"
+              >
+                🌐 Rejoindre un lobby public
+              </button>
+
               {/* Info */}
               <div className="mt-8 p-4 bg-gray-900 rounded-lg border border-gray-700">
                 <h4 className="font-semibold text-primary mb-2">ℹ️ Informations</h4>
@@ -185,7 +219,7 @@ export default function Home() {
                 Créer la partie
               </button>
             </div>
-          ) : (
+          ) : mode === 'join' ? (
             // Formulaire de connexion
             <div className="space-y-4">
               <button
@@ -229,6 +263,50 @@ export default function Home() {
               >
                 Rejoindre
               </button>
+            </div>
+          ) : (
+            // Formulaire lobby public
+            <div className="space-y-4">
+              <button
+                onClick={() => setMode(null)}
+                className="text-gray-400 hover:text-white mb-4"
+              >
+                ← Retour
+              </button>
+              
+              <h3 className="text-2xl font-bold mb-6">🌐 Lobby Public</h3>
+              
+              <div className="bg-purple-500/10 border border-purple-500 rounded-lg p-4 mb-4">
+                <p className="text-purple-300 text-sm">
+                  Rejoignez automatiquement un lobby avec d'autres joueurs en attente !
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Votre nom</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Agent Smith"
+                  className="input"
+                  maxLength={20}
+                  onKeyPress={(e) => e.key === 'Enter' && handleJoinPublicRoom()}
+                />
+              </div>
+
+              <button
+                onClick={handleJoinPublicRoom}
+                disabled={!connected || !name.trim()}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 text-lg rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Trouver un lobby
+              </button>
+
+              <div className="text-center text-sm text-gray-400">
+                <p>Vous serez mis en relation avec d'autres joueurs</p>
+                <p>ou un nouveau lobby sera créé pour vous.</p>
+              </div>
             </div>
           )}
         </motion.div>
