@@ -81,11 +81,17 @@ export function RoomSyncProvider({ children }) {
     }
   }
 
+  // Fonction pour nettoyer l'état de toutes les salles (utilisée lors du reset du jeu)
+  const clearAllRoomStates = () => {
+    roomStates.current = {}
+  }
+
   const value = {
     syncRoomState,
     subscribeToRoomState,
     getRoomState,
-    initializeRoomState
+    initializeRoomState,
+    clearAllRoomStates
   }
 
   return (

@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGame } from '../context/GameContext'
+import { useRoomSync } from '../context/RoomSyncContext'
 import { motion } from 'framer-motion'
 
 export default function Debriefing() {
   const navigate = useNavigate()
   const { gameResult, resetGame } = useGame()
+  const { clearAllRoomStates } = useRoomSync()
 
   useEffect(() => {
     if (!gameResult) {
@@ -20,7 +22,11 @@ export default function Debriefing() {
   const seconds = gameResult.finalTime % 60
 
   const handlePlayAgain = () => {
+    // Nettoyer l'état de toutes les salles
+    clearAllRoomStates()
+    // Réinitialiser le jeu
     resetGame()
+    // Retourner à la page d'accueil
     navigate('/')
   }
 

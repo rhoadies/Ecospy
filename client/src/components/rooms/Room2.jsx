@@ -57,14 +57,26 @@ export default function Room2({ onSubmit }) {
       setCards(existingState.cards)
       initializedRef.current = true
     } else if (!initializedRef.current) {
-      // Initialiser avec un mélange aléatoire mais déterministe
-      // Utiliser une graine basée sur le code de la room pour que tous les joueurs aient le même mélange
-      const seed = roomCode ? roomCode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 12345
+      // Générateur de nombres pseudo-aléatoires avec graine (PRNG)
+      const seededRandom = (seed) => {
+        let state = seed
+        return () => {
+          state = (state * 1664525 + 1013904223) % 4294967296
+          return state / 4294967296
+        }
+      }
       
-      // Fonction de mélange Fisher-Yates avec graine déterministe
+      // Créer une graine basée sur le code de la room + timestamp (arrondi à la minute pour synchronisation)
+      const roomSeed = roomCode ? roomCode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 12345
+      const timeSeed = Math.floor(Date.now() / 60000) // Change chaque minute
+      const seed = roomSeed + timeSeed
+      
+      const random = seededRandom(seed)
+      
+      // Fonction de mélange Fisher-Yates avec PRNG
       const shuffled = [...cardPairs]
       for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor((seed * (i + 1) * 7) % (i + 1))
+        const j = Math.floor(random() * (i + 1))
         ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
       }
       

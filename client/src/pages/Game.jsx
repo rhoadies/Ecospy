@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSocket } from '../context/SocketContext'
 import { useGame } from '../context/GameContext'
+import { useRoomSync } from '../context/RoomSyncContext'
 import Timer from '../components/Timer'
 import Chat from '../components/Chat'
 import PlayersList from '../components/PlayersList'
@@ -15,6 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 export default function Game() {
   const navigate = useNavigate()
   const { socket } = useSocket()
+  const { clearAllRoomStates } = useRoomSync()
   const { 
     room, 
     roomCode, 
@@ -127,6 +129,7 @@ export default function Game() {
 
   const handleQuit = () => {
     if (window.confirm('Êtes-vous sûr de vouloir quitter la partie ? Votre progression sera perdue.')) {
+      clearAllRoomStates()
       resetGame()
       navigate('/')
     }
