@@ -42,6 +42,14 @@ export default function Room1({ onSubmit }) {
     }
   }
 
+  // Bonnes réponses qui donnent des indices (choix les moins polluants)
+  const correctAnswers = {
+    transport: 'velo',     // 0g CO2
+    food: 'local',         // 40g CO2
+    energy: 'solaire'      // 40g CO2
+    // Total: 80g CO2
+  }
+
   // Initialiser l'état synchronisé
   useEffect(() => {
     const existingState = getRoomState(1)
@@ -104,6 +112,19 @@ export default function Room1({ onSubmit }) {
 
   const total = calculateTotal()
   const isComplete = selectedActions.transport && selectedActions.food && selectedActions.energy
+  
+  // Vérifier si toutes les bonnes réponses sont sélectionnées
+  const hasCorrectAnswers = 
+    selectedActions.transport === correctAnswers.transport &&
+    selectedActions.food === correctAnswers.food &&
+    selectedActions.energy === correctAnswers.energy
+  
+  // Indices à afficher quand les bonnes réponses sont sélectionnées
+  const clues = [
+    { icon: '🚗', text: 'Le transport écologique émet 0g de CO₂', value: 0 },
+    { icon: '🍽️', text: 'L\'alimentation locale émet 40g de CO₂', value: 40 },
+    { icon: '⚡', text: 'L\'énergie solaire émet 40g de CO₂', value: 40 }
+  ]
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -162,9 +183,6 @@ export default function Room1({ onSubmit }) {
                     />
                     <div className="inline">
                       <div className="font-medium">{option.label}</div>
-                      <div className="text-sm text-gray-400">
-                        {option.co2}g CO₂
-                      </div>
                     </div>
                   </label>
                 ))}
@@ -180,23 +198,65 @@ export default function Room1({ onSubmit }) {
             animate={{ opacity: 1, scale: 1 }}
             className="bg-gray-900 rounded-lg p-6 border-2 border-primary"
           >
-            <div className="text-center mb-6">
-              <p className="text-gray-400 mb-2">Empreinte carbone totale calculée :</p>
-              <div className="text-5xl font-bold text-primary">
-                {total}g CO₂
-              </div>
-              <p className="text-sm text-gray-500 mt-2">
-                Soit {(total / 1000).toFixed(2)} kg de CO₂ pour une seule journée
-              </p>
-            </div>
+            {hasCorrectAnswers ? (
+              // Afficher les indices si les bonnes réponses sont sélectionnées
+              <div className="mb-6">
+                <div className="text-center mb-4">
+                  <p className="text-primary text-lg font-semibold mb-2">
+                    ✅ Bonne sélection ! Voici les indices :
+                  </p>
+                  <p className="text-gray-400 text-sm">
+                    Additionnez les émissions de CO₂ pour trouver le code d'accès
+                  </p>
+                </div>
 
-            <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4 mb-6">
-              <p className="text-blue-400 text-sm">
-                💡 <strong>Info pédagogique :</strong> En France, l'empreinte carbone moyenne est de 
-                ~10 tonnes de CO₂ par an et par personne. L'objectif pour limiter le réchauffement 
-                climatique à 1,5°C est de descendre à 2 tonnes par an d'ici 2050.
-              </p>
-            </div>
+                <div className="grid gap-3 mb-6">
+                  {clues.map((clue, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.2 }}
+                      className="bg-primary/10 border border-primary rounded-lg p-4"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-3xl">{clue.icon}</span>
+                        <div className="flex-1">
+                          <p className="text-white font-medium">{clue.text}</p>
+                        </div>
+                        <div className="text-2xl font-bold text-primary">
+                          {clue.value}g
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4 mb-6">
+                  <p className="text-blue-400 text-sm">
+                    💡 <strong>Calcul :</strong> Additionnez les trois valeurs ci-dessus pour obtenir 
+                    l'empreinte carbone totale en grammes de CO₂.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              // Message si les réponses ne sont pas toutes correctes
+              <div className="text-center mb-6">
+                <p className="text-yellow-400 mb-4">
+                  🔍 Ce ne sont pas les choix les plus écologiques...
+                </p>
+                <p className="text-gray-400 text-sm mb-4">
+                  Essayez différentes combinaisons pour débloquer les indices !
+                </p>
+                <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                  <p className="text-gray-300 text-sm">
+                    💡 <strong>Astuce :</strong> Pour sauver la planète, cherchez les options 
+                    les moins polluantes dans chaque catégorie. Trouvez la bonne combinaison pour révéler 
+                    les indices qui vous permettront de calculer le code.
+                  </p>
+                </div>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -228,7 +288,7 @@ export default function Room1({ onSubmit }) {
 
         {!isComplete && (
           <div className="text-center text-gray-500 py-8">
-            <p>Sélectionnez une option dans chaque catégorie pour calculer l'empreinte carbone</p>
+            <p>Sélectionnez une option dans chaque catégorie pour trouver les indices</p>
           </div>
         )}
       </motion.div>
