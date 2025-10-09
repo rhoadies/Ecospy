@@ -300,17 +300,17 @@ export default function Room3({ onSubmit }) {
                 </div>
 
                 <div className="bg-gray-800 rounded-lg p-6 mb-4">
-                  {/* Carte du monde SVG */}
+                  {/* Carte du monde SVG avec coordonnées réalistes */}
                   <div className="relative w-full h-96 bg-blue-900/20 rounded-lg overflow-hidden mb-4">
                     <svg
-                      viewBox="0 0 800 400"
+                      viewBox="0 0 1000 500"
                       className="w-full h-full"
                       style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%)' }}
                     >
-                      {/* Continents simplifiés */}
+                      {/* Continents plus réalistes */}
                       {/* Amérique du Sud */}
                       <path
-                        d="M150 200 Q180 180 200 200 Q220 250 200 300 Q180 320 150 300 Q130 280 140 250 Z"
+                        d="M200 300 Q220 280 250 290 Q280 300 300 320 Q320 350 300 380 Q280 400 250 390 Q220 380 200 360 Q180 340 190 320 Z"
                         fill="#2d5a27"
                         stroke="#1a3d1a"
                         strokeWidth="1"
@@ -318,7 +318,7 @@ export default function Room3({ onSubmit }) {
                       
                       {/* Afrique */}
                       <path
-                        d="M350 120 Q380 100 400 120 Q420 180 400 280 Q380 300 350 280 Q330 250 340 200 Z"
+                        d="M450 150 Q480 130 520 150 Q550 180 540 220 Q550 260 520 300 Q480 320 450 300 Q420 280 430 240 Q440 200 450 180 Z"
                         fill="#2d5a27"
                         stroke="#1a3d1a"
                         strokeWidth="1"
@@ -326,7 +326,7 @@ export default function Room3({ onSubmit }) {
                       
                       {/* Europe */}
                       <path
-                        d="M350 80 Q380 60 400 80 Q420 100 400 120 Q380 100 350 120 Z"
+                        d="M450 120 Q480 100 520 120 Q550 140 520 160 Q480 150 450 140 Z"
                         fill="#2d5a27"
                         stroke="#1a3d1a"
                         strokeWidth="1"
@@ -334,15 +334,15 @@ export default function Room3({ onSubmit }) {
                       
                       {/* Asie */}
                       <path
-                        d="M400 80 Q500 60 600 100 Q650 150 600 200 Q550 180 500 160 Q450 140 400 120 Z"
+                        d="M520 120 Q650 100 750 150 Q800 200 780 250 Q750 280 700 270 Q650 250 600 230 Q550 200 520 180 Z"
                         fill="#2d5a27"
                         stroke="#1a3d1a"
                         strokeWidth="1"
                       />
                       
-                      {/* Océanie */}
+                      {/* Océanie/Australie */}
                       <path
-                        d="M600 250 Q650 230 680 250 Q700 280 680 320 Q650 340 600 320 Q580 300 590 270 Z"
+                        d="M750 350 Q800 330 850 350 Q880 380 850 420 Q800 440 750 420 Q720 390 730 360 Z"
                         fill="#2d5a27"
                         stroke="#1a3d1a"
                         strokeWidth="1"
@@ -350,71 +350,95 @@ export default function Room3({ onSubmit }) {
                       
                       {/* Madagascar */}
                       <ellipse
-                        cx="420"
-                        cy="280"
-                        rx="15"
-                        ry="25"
+                        cx="520"
+                        cy="320"
+                        rx="20"
+                        ry="35"
                         fill="#2d5a27"
                         stroke="#1a3d1a"
                         strokeWidth="1"
                       />
                       
-                      {/* Points des régions */}
-                      {/* Amazonie */}
+                      {/* Indonésie - Bornéo */}
+                      <path
+                        d="M680 280 Q720 260 750 280 Q780 300 750 320 Q720 340 680 320 Q660 300 670 280 Z"
+                        fill="#2d5a27"
+                        stroke="#1a3d1a"
+                        strokeWidth="1"
+                      />
+                      
+                      {/* Indonésie - Sumatra */}
+                      <path
+                        d="M650 300 Q680 280 700 300 Q720 320 700 340 Q680 360 650 340 Q630 320 640 300 Z"
+                        fill="#2d5a27"
+                        stroke="#1a3d1a"
+                        strokeWidth="1"
+                      />
+                      
+                      {/* Points des régions avec coordonnées réalistes */}
+                      {/* 1. Amazonie (Brésil) - Amérique du Sud */}
                       <circle
-                        cx="180"
-                        cy="250"
-                        r="8"
+                        cx="250"
+                        cy="320"
+                        r="10"
                         fill="#ef4444"
                         stroke="#ffffff"
-                        strokeWidth="2"
+                        strokeWidth="3"
                       />
-                      <text x="190" y="255" fill="white" fontSize="12" fontWeight="bold">1</text>
+                      <text x="265" y="328" fill="white" fontSize="14" fontWeight="bold">1</text>
                       
-                      {/* Congo */}
+                      {/* 2. Congo (Afrique centrale) */}
                       <circle
-                        cx="380"
-        cy="200"
-        r="8"
-        fill="#ef4444"
-        stroke="#ffffff"
-        strokeWidth="2"
-      />
-      <text x="390" y="205" fill="white" fontSize="12" fontWeight="bold">2</text>
-      
-      {/* Bornéo */}
-      <circle
-        cx="520"
-        cy="220"
-        r="8"
-        fill="#ef4444"
-        stroke="#ffffff"
-        strokeWidth="2"
-      />
-      <text x="530" y="225" fill="white" fontSize="12" fontWeight="bold">3</text>
-      
-      {/* Sumatra */}
-      <circle
-        cx="480"
-        cy="240"
-        r="8"
-        fill="#ef4444"
-        stroke="#ffffff"
-        strokeWidth="2"
-      />
-      <text x="490" y="245" fill="white" fontSize="12" fontWeight="bold">4</text>
-      
-      {/* Madagascar */}
-      <circle
-        cx="420"
-        cy="280"
-        r="8"
-        fill="#ef4444"
-        stroke="#ffffff"
-        strokeWidth="2"
-      />
-      <text x="430" y="285" fill="white" fontSize="12" fontWeight="bold">5</text>
-    </svg>
+                        cx="480"
+                        cy="220"
+                        r="10"
+                        fill="#ef4444"
+                        stroke="#ffffff"
+                        strokeWidth="3"
+                      />
+                      <text x="495" y="228" fill="white" fontSize="14" fontWeight="bold">2</text>
+                      
+                      {/* 3. Bornéo (Asie du Sud-Est) */}
+                      <circle
+                        cx="720"
+                        cy="300"
+                        r="10"
+                        fill="#ef4444"
+                        stroke="#ffffff"
+                        strokeWidth="3"
+                      />
+                      <text x="735" y="308" fill="white" fontSize="14" fontWeight="bold">3</text>
+                      
+                      {/* 4. Sumatra (Indonésie) */}
+                      <circle
+                        cx="680"
+                        cy="320"
+                        r="10"
+                        fill="#ef4444"
+                        stroke="#ffffff"
+                        strokeWidth="3"
+                      />
+                      <text x="695" y="328" fill="white" fontSize="14" fontWeight="bold">4</text>
+                      
+                      {/* 5. Madagascar */}
+                      <circle
+                        cx="520"
+                        cy="320"
+                        r="10"
+                        fill="#ef4444"
+                        stroke="#ffffff"
+                        strokeWidth="3"
+                      />
+                      <text x="535" y="328" fill="white" fontSize="14" fontWeight="bold">5</text>
+                      
+                      {/* Lignes de grille pour référence */}
+                      <defs>
+                        <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#1e40af" strokeWidth="0.5" opacity="0.3"/>
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill="url(#grid)" />
+                    </svg>
     
     {/* Légende */}
     <div className="absolute top-4 left-4 bg-black/70 rounded-lg p-3">
