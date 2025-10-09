@@ -193,7 +193,7 @@ export default function Room3({ onSubmit }) {
         })
       }
     } else {
-      toast.error('Ce n'est pas la bonne région. Réessayez.')
+      toast.error('Ce n\'est pas la bonne région. Réessayez.')
     }
   }
 
@@ -217,7 +217,7 @@ export default function Room3({ onSubmit }) {
           <div className="bg-red-500/10 border border-red-500 rounded-lg p-3">
             <p className="text-red-400 text-sm">
               🤝 <strong>Coopération requise :</strong> Chaque joueur a un indice différent. 
-              Partagez vos indices avec l'équipe via le chat ou le bouton ci-dessous pour identifier 
+              Partagez vos indices avec l\'équipe via le chat ou le bouton ci-dessous pour identifier 
               la région la plus critique !
             </p>
           </div>
@@ -251,7 +251,7 @@ export default function Room3({ onSubmit }) {
               
               {sharedClues.length === 0 ? (
                 <p className="text-gray-500 text-center py-4">
-                  En attente des indices de l'équipe...
+                  En attente des indices de l\'équipe...
                 </p>
               ) : (
                 <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -270,7 +270,7 @@ export default function Room3({ onSubmit }) {
             {/* Info joueurs */}
             <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
               <p className="text-blue-300 text-sm">
-                👥 <strong>{room?.players?.length || 0} joueur(s)</strong> dans l'équipe. 
+                👥 <strong>{room?.players?.length || 0} joueur(s)</strong> dans l\'équipe. 
                 Chacun a un indice différent !
               </p>
             </div>
@@ -340,7 +340,7 @@ export default function Room3({ onSubmit }) {
             <div className="mt-4 bg-blue-500/10 border border-blue-500 rounded-lg p-4">
               <h4 className="text-blue-400 font-semibold mb-2">💡 À savoir</h4>
               <ul className="text-sm text-blue-300 space-y-1">
-                <li>• 10 millions d'hectares de forêt disparaissent chaque année</li>
+                <li>• 10 millions d\'hectares de forêt disparaissent chaque année</li>
                 <li>• La déforestation contribue à 15% des émissions de gaz à effet de serre</li>
                 <li>• 80% des espèces terrestres vivent dans les forêts</li>
                 <li>• Les forêts absorbent 2 milliards de tonnes de CO₂ par an</li>
