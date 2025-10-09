@@ -126,7 +126,7 @@ export default function Room1({ onSubmit }) {
       category: 'Transport écologique',
       riddle: [
         'Je suis le seul nombre qui, quand on me sert pour additionner, ne change rien.',
-        'Si tu me multiplies par n\'importe quel nombre, je disparais.',
+        'Si tu me multiplies par n\'importe quel nombre, il disparait.',
         'Je ne suis ni positif ni négatif, mais je suis pair.'
       ],
       value: 0 
