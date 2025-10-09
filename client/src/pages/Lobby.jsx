@@ -184,7 +184,7 @@ export default function Lobby() {
           transition={{ delay: 0.5 }}
           className="mt-6 text-center text-gray-500 text-sm"
         >
-          <p>💡 Astuce : Utilisez un casque pour une meilleure immersion</p>
+          <p>💡 Astuce : Créer un lobby public pour jouer a plusieurs !!</p>
         </motion.div>
       </motion.div>
     </div>

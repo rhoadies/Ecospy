@@ -168,7 +168,7 @@ export default function Room4({ onSubmit }) {
             </div>
           </div>
           
-          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-3">
+          <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-3 mb-3">
             <p className="text-yellow-400 text-sm">
               📋 <strong>Mission finale :</strong> Trouve le mix énergétique optimal tout en étant réaliste. 
               Fait glisser les barres ci-dessous pour atteindre 60% d'énergies renouvelables en respectant le budget de 70€/MWh. 
@@ -176,6 +176,17 @@ export default function Room4({ onSubmit }) {
             <p className="text-yellow-300 text-sm mt-2">
               🎯 Objectif : Atteindre 100% de production totale avec exactement 60% de renouvelables
             </p>
+          </div>
+
+          {/* Info éducative */}
+          <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
+            <h3 className="text-blue-400 font-semibold mb-2">💡 Transition énergétique</h3>
+            <ul className="text-sm text-blue-300 space-y-1">
+              <li>• En 2023, les renouvelables représentaient 30% de la production mondiale d'électricité</li>
+              <li>• L'objectif européen est d'atteindre 42,5% de renouvelables d'ici 2030</li>
+              <li>• Le solaire et l'éolien sont désormais les énergies les moins chères à produire</li>
+              <li>• La France vise la neutralité carbone d'ici 2050</li>
+            </ul>
           </div>
         </div>
 
@@ -386,17 +397,6 @@ export default function Room4({ onSubmit }) {
             </p>
           </div>
         )}
-
-        {/* Info éducative */}
-        <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
-          <h3 className="text-blue-400 font-semibold mb-2">💡 Transition énergétique</h3>
-          <ul className="text-sm text-blue-300 space-y-1">
-            <li>• En 2023, les renouvelables représentaient 30% de la production mondiale d'électricité</li>
-            <li>• L'objectif européen est d'atteindre 42,5% de renouvelables d'ici 2030</li>
-            <li>• Le solaire et l'éolien sont désormais les énergies les moins chères à produire</li>
-            <li>• La France vise la neutralité carbone d'ici 2050</li>
-          </ul>
-        </div>
       </motion.div>
     </div>
   )

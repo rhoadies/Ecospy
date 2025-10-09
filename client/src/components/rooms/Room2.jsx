@@ -210,6 +210,17 @@ export default function Room2({ onSubmit }) {
             </p>
           </div>
 
+          {/* Info éducative */}
+          <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4 mb-3">
+            <h3 className="text-blue-400 font-semibold mb-2">💡 Le saviez-vous ?</h3>
+            <ul className="text-sm text-blue-300 space-y-1">
+              <li>• Chaque année, 8 millions de tonnes de plastique finissent dans les océans</li>
+              <li>• D'ici 2050, il y aura plus de plastique que de poissons dans l'océan (en poids)</li>
+              <li>• Les micro-plastiques sont retrouvés dans 90% des oiseaux marins</li>
+              <li>• Une seule bouteille plastique peut se fragmenter en 10 000 micro-plastiques</li>
+            </ul>
+          </div>
+
           {/* Stats */}
           <div className="flex gap-4 justify-center">
             <div className="bg-gray-900 px-6 py-3 rounded-lg">
@@ -281,17 +292,6 @@ export default function Room2({ onSubmit }) {
               </motion.div>
             )
           })}
-        </div>
-
-        {/* Info éducative */}
-        <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
-          <h3 className="text-blue-400 font-semibold mb-2">💡 Le saviez-vous ?</h3>
-          <ul className="text-sm text-blue-300 space-y-1">
-            <li>• Chaque année, 8 millions de tonnes de plastique finissent dans les océans</li>
-            <li>• D'ici 2050, il y aura plus de plastique que de poissons dans l'océan (en poids)</li>
-            <li>• Les micro-plastiques sont retrouvés dans 90% des oiseaux marins</li>
-            <li>• Une seule bouteille plastique peut se fragmenter en 10 000 micro-plastiques</li>
-          </ul>
         </div>
       </motion.div>
     </div>

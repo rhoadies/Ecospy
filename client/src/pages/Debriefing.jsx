@@ -41,11 +41,13 @@ export default function Debriefing() {
       ]
     },
     oceanPollution: {
-      title: "🌊 Pollution Océanique",
+      title: "🌊 Pollution Océanique - Temps de décomposition",
       points: [
+        "Bouteille plastique : 450 ans dans l'océan",
+        "Sac plastique : 20 ans - Mégot de cigarette : 2 ans",
+        "Canette aluminium : 200 ans - Bouteille en verre : 4000 ans",
+        "Couche bébé : 500 ans - Gobelet plastique : 50 ans",
         "8 millions de tonnes de plastique dans les océans chaque année",
-        "5 000 milliards de morceaux de plastique flottent à la surface",
-        "Plus de 800 espèces marines impactées par les déchets plastiques",
         "Solution : réduire, réutiliser, recycler + ramasser les déchets"
       ]
     },

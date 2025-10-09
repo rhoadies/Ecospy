@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useSocket } from '../../context/SocketContext'
 import { useGame } from '../../context/GameContext'
 import { useRoomSync } from '../../context/RoomSyncContext'
@@ -16,6 +16,7 @@ export default function Room3({ onSubmit }) {
   const [stage, setStage] = useState(0) // 0..4 to guess 5 regions in order
   const [sharedByPlayer, setSharedByPlayer] = useState({}) // Suivi des indices partagés par joueur et stage (synchronisé)
   const [mySharedStages, setMySharedStages] = useState(new Set()) // Suivi local de mes partages
+  const [showMap, setShowMap] = useState(false) // État pour afficher la carte
 
   const regions = [
     {
@@ -241,14 +242,97 @@ export default function Room3({ onSubmit }) {
             </div>
           </div>
           
-          <div className="bg-red-500/10 border border-red-500 rounded-lg p-3">
+          <div className="bg-red-500/10 border border-red-500 rounded-lg p-3 mb-3">
             <p className="text-red-400 text-sm">
               🤝 <strong>Coopération requise :</strong> Chaque joueur a un indice différent. 
               Partagez vos indices avec l\'équipe via le chat ou le bouton ci-dessous pour identifier 
               la région la plus critique !
             </p>
           </div>
+
+          {/* Info éducative */}
+          <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
+            <h4 className="text-blue-400 font-semibold mb-2">💡 À savoir</h4>
+            <ul className="text-sm text-blue-300 space-y-1">
+              <li>• 10 millions d\'hectares de forêt disparaissent chaque année</li>
+              <li>• La déforestation contribue à 15% des émissions de gaz à effet de serre</li>
+              <li>• 80% des espèces terrestres vivent dans les forêts</li>
+              <li>• Les forêts absorbent 2 milliards de tonnes de CO₂ par an</li>
+            </ul>
+          </div>
+
+          {/* Bouton Carte */}
+          <div className="flex justify-center mb-4">
+            <button
+              onClick={() => setShowMap(true)}
+              className="btn-secondary px-6 py-3 flex items-center gap-2"
+            >
+              🗺️ Voir la carte des régions
+            </button>
+          </div>
         </div>
+
+        {/* Modal Carte */}
+        <AnimatePresence>
+          {showMap && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+              onClick={() => setShowMap(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-gray-900 rounded-lg p-6 max-w-4xl w-full border-2 border-primary"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-2xl font-bold text-primary">🗺️ Carte des 5 régions</h3>
+                  <button
+                    onClick={() => setShowMap(false)}
+                    className="text-gray-400 hover:text-white text-2xl"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="bg-gray-800 rounded-lg p-6 mb-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {regions.map((region) => (
+                      <div
+                        key={region.id}
+                        className="bg-gray-700 rounded-lg p-4 border-2 border-gray-600"
+                      >
+                        <div className="flex items-start gap-3">
+                          <span className="text-4xl">{region.icon}</span>
+                          <div className="flex-1">
+                            <h4 className="text-lg font-bold text-white mb-1">{region.name}</h4>
+                            <p className="text-sm text-gray-300 mb-2">{region.location}</p>
+                            <div className="bg-red-500/20 border border-red-500 rounded px-2 py-1 inline-block">
+                              <span className="text-red-400 text-xs font-semibold">
+                                🌳 {region.hectares}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
+                  <p className="text-blue-400 text-sm">
+                    <strong>Astuce :</strong> Utilisez cette carte pour identifier les régions mentionnées 
+                    dans les indices partagés par votre équipe !
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Panneau des indices */}
@@ -370,17 +454,6 @@ export default function Room3({ onSubmit }) {
                 {stage + 1 < targetOrder.length ? '✅ Valider et continuer' : '🔓 Valider la dernière région'}
               </button>
             </form>
-
-            {/* Info éducative */}
-            <div className="mt-4 bg-blue-500/10 border border-blue-500 rounded-lg p-4">
-              <h4 className="text-blue-400 font-semibold mb-2">💡 À savoir</h4>
-              <ul className="text-sm text-blue-300 space-y-1">
-                <li>• 10 millions d\'hectares de forêt disparaissent chaque année</li>
-                <li>• La déforestation contribue à 15% des émissions de gaz à effet de serre</li>
-                <li>• 80% des espèces terrestres vivent dans les forêts</li>
-                <li>• Les forêts absorbent 2 milliards de tonnes de CO₂ par an</li>
-              </ul>
-            </div>
           </div>
         </div>
       </motion.div>
