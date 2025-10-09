@@ -172,8 +172,8 @@ export default function Room1({ onSubmit }) {
           
           <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-4">
             <p className="text-yellow-400">
-              📋 <strong>Mission :</strong> Les agents de la corporation ont laissé des traces. 
-              Calculez l'empreinte carbone de leurs activités quotidiennes. Le total (en grammes de CO2) est le code d'accès !
+              📋 <strong>Mission :</strong> Trouver pour chaque catégorie l'option la moins polluante. Une fois la bonne combinaison
+              entré vous aurez une énigme par catégorie à résoudre pour trouver l'empreinte carbone de chaque réponse (en gramme) puis additionnez-les pour obtenir le code d'accès !
             </p>
           </div>
         </div>

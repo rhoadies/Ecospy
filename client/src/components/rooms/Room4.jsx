@@ -170,8 +170,8 @@ export default function Room4({ onSubmit }) {
           
           <div className="bg-yellow-500/10 border border-yellow-500 rounded-lg p-3">
             <p className="text-yellow-400 text-sm">
-              📋 <strong>Mission finale :</strong> Créez un mix énergétique optimal. 
-              Le pourcentage total d'énergies renouvelables est le code final !
+              📋 <strong>Mission finale :</strong> Trouve le mix énergétique optimal tout en étant réaliste. 
+              Fait glisser les barres ci-dessous pour atteindre 60% d'énergies renouvelables en respectant le budget de 70€/MWh. 
             </p>
             <p className="text-yellow-300 text-sm mt-2">
               🎯 Objectif : Atteindre 100% de production totale avec exactement 60% de renouvelables
