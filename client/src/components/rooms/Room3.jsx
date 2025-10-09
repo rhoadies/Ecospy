@@ -300,145 +300,88 @@ export default function Room3({ onSubmit }) {
                 </div>
 
                 <div className="bg-gray-800 rounded-lg p-6 mb-4">
-                  {/* Carte du monde SVG avec coordonnées réalistes */}
-                  <div className="relative w-full h-96 bg-blue-900/20 rounded-lg overflow-hidden mb-4">
-                    <svg
-                      viewBox="0 0 1000 500"
-                      className="w-full h-full"
-                      style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%)' }}
-                    >
-                      {/* Continents plus réalistes */}
-                      {/* Amérique du Sud */}
-                      <path
-                        d="M200 300 Q220 280 250 290 Q280 300 300 320 Q320 350 300 380 Q280 400 250 390 Q220 380 200 360 Q180 340 190 320 Z"
-                        fill="#2d5a27"
-                        stroke="#1a3d1a"
-                        strokeWidth="1"
-                      />
-                      
-                      {/* Afrique */}
-                      <path
-                        d="M450 150 Q480 130 520 150 Q550 180 540 220 Q550 260 520 300 Q480 320 450 300 Q420 280 430 240 Q440 200 450 180 Z"
-                        fill="#2d5a27"
-                        stroke="#1a3d1a"
-                        strokeWidth="1"
-                      />
-                      
-                      {/* Europe */}
-                      <path
-                        d="M450 120 Q480 100 520 120 Q550 140 520 160 Q480 150 450 140 Z"
-                        fill="#2d5a27"
-                        stroke="#1a3d1a"
-                        strokeWidth="1"
-                      />
-                      
-                      {/* Asie */}
-                      <path
-                        d="M520 120 Q650 100 750 150 Q800 200 780 250 Q750 280 700 270 Q650 250 600 230 Q550 200 520 180 Z"
-                        fill="#2d5a27"
-                        stroke="#1a3d1a"
-                        strokeWidth="1"
-                      />
-                      
-                      {/* Océanie/Australie */}
-                      <path
-                        d="M750 350 Q800 330 850 350 Q880 380 850 420 Q800 440 750 420 Q720 390 730 360 Z"
-                        fill="#2d5a27"
-                        stroke="#1a3d1a"
-                        strokeWidth="1"
-                      />
-                      
-                      {/* Madagascar */}
-                      <ellipse
-                        cx="520"
-                        cy="320"
-                        rx="20"
-                        ry="35"
-                        fill="#2d5a27"
-                        stroke="#1a3d1a"
-                        strokeWidth="1"
-                      />
-                      
-                      {/* Indonésie - Bornéo */}
-                      <path
-                        d="M680 280 Q720 260 750 280 Q780 300 750 320 Q720 340 680 320 Q660 300 670 280 Z"
-                        fill="#2d5a27"
-                        stroke="#1a3d1a"
-                        strokeWidth="1"
-                      />
-                      
-                      {/* Indonésie - Sumatra */}
-                      <path
-                        d="M650 300 Q680 280 700 300 Q720 320 700 340 Q680 360 650 340 Q630 320 640 300 Z"
-                        fill="#2d5a27"
-                        stroke="#1a3d1a"
-                        strokeWidth="1"
-                      />
-                      
-                      {/* Points des régions avec coordonnées réalistes */}
-                      {/* 1. Amazonie (Brésil) - Amérique du Sud */}
-                      <circle
-                        cx="250"
-                        cy="320"
-                        r="10"
-                        fill="#ef4444"
-                        stroke="#ffffff"
-                        strokeWidth="3"
-                      />
-                      <text x="265" y="328" fill="white" fontSize="14" fontWeight="bold">1</text>
-                      
-                      {/* 2. Congo (Afrique centrale) */}
-                      <circle
-                        cx="480"
-                        cy="220"
-                        r="10"
-                        fill="#ef4444"
-                        stroke="#ffffff"
-                        strokeWidth="3"
-                      />
-                      <text x="495" y="228" fill="white" fontSize="14" fontWeight="bold">2</text>
-                      
-                      {/* 3. Bornéo (Asie du Sud-Est) */}
-                      <circle
-                        cx="720"
-                        cy="300"
-                        r="10"
-                        fill="#ef4444"
-                        stroke="#ffffff"
-                        strokeWidth="3"
-                      />
-                      <text x="735" y="308" fill="white" fontSize="14" fontWeight="bold">3</text>
-                      
-                      {/* 4. Sumatra (Indonésie) */}
-                      <circle
-                        cx="680"
-                        cy="320"
-                        r="10"
-                        fill="#ef4444"
-                        stroke="#ffffff"
-                        strokeWidth="3"
-                      />
-                      <text x="695" y="328" fill="white" fontSize="14" fontWeight="bold">4</text>
-                      
-                      {/* 5. Madagascar */}
-                      <circle
-                        cx="520"
-                        cy="320"
-                        r="10"
-                        fill="#ef4444"
-                        stroke="#ffffff"
-                        strokeWidth="3"
-                      />
-                      <text x="535" y="328" fill="white" fontSize="14" fontWeight="bold">5</text>
-                      
-                      {/* Lignes de grille pour référence */}
-                      <defs>
-                        <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-                          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#1e40af" strokeWidth="0.5" opacity="0.3"/>
-                        </pattern>
-                      </defs>
-                      <rect width="100%" height="100%" fill="url(#grid)" />
-                    </svg>
+                  {/* Carte du monde avec image réelle */}
+                  <div className="relative w-full h-96 bg-gray-700 rounded-lg overflow-hidden mb-4">
+                    {/* Image de carte du monde */}
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1200px-World_map_-_low_resolution.svg.png"
+                      alt="Carte du monde"
+                      className="w-full h-full object-cover opacity-80"
+                      onError={(e) => {
+                        // Fallback si l'image ne charge pas
+                        e.target.style.display = 'none'
+                        e.target.nextSibling.style.display = 'block'
+                      }}
+                    />
+                    
+                    {/* Fallback SVG si l'image ne charge pas */}
+                    <div className="absolute inset-0 hidden" style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%)' }}>
+                      <div className="flex items-center justify-center h-full text-white text-lg">
+                        🌍 Carte du monde
+                      </div>
+                    </div>
+                    
+                    {/* Points numérotés sur la carte */}
+                    {/* 1. Amazonie (Brésil) - Amérique du Sud */}
+                    <div className="absolute" style={{ left: '25%', top: '65%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                          <span className="text-white text-sm font-bold">1</span>
+                        </div>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Amazonie
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* 2. Congo (Afrique centrale) */}
+                    <div className="absolute" style={{ left: '52%', top: '55%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                          <span className="text-white text-sm font-bold">2</span>
+                        </div>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Congo
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* 3. Bornéo (Asie du Sud-Est) */}
+                    <div className="absolute" style={{ left: '75%', top: '60%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                          <span className="text-white text-sm font-bold">3</span>
+                        </div>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Bornéo
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* 4. Sumatra (Indonésie) */}
+                    <div className="absolute" style={{ left: '72%', top: '65%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                          <span className="text-white text-sm font-bold">4</span>
+                        </div>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Sumatra
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* 5. Madagascar */}
+                    <div className="absolute" style={{ left: '58%', top: '70%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                          <span className="text-white text-sm font-bold">5</span>
+                        </div>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Madagascar
+                        </div>
+                      </div>
+                    </div>
+                  </div>
     
     {/* Légende */}
     <div className="absolute top-4 left-4 bg-black/70 rounded-lg p-3">
