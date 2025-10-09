@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast'
 import { SocketProvider } from './context/SocketContext'
 import { GameProvider } from './context/GameContext'
 import { RoomSyncProvider } from './context/RoomSyncContext'
+import AudioManager from './components/AudioManager'
 import Home from './pages/Home'
 import Lobby from './pages/Lobby'
 import Game from './pages/Game'
@@ -15,6 +16,7 @@ function App() {
       <SocketProvider>
         <GameProvider>
           <RoomSyncProvider>
+            <AudioManager />
             <div className="min-h-screen bg-gradient-to-br from-gray-900 via-dark to-gray-900">
             <Routes>
               <Route path="/" element={<Home />} />

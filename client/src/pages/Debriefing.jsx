@@ -272,7 +272,7 @@ export default function Debriefing() {
               🔄 Rejouer
             </button>
             <button
-              onClick={() => window.close()}
+              onClick={handlePlayAgain}
               className="flex-1 py-4 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-lg"
             >
               ✕ Quitter

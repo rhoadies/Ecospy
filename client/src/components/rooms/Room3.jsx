@@ -14,7 +14,8 @@ export default function Room3({ onSubmit }) {
   const [sharedClues, setSharedClues] = useState([])
   const [myClue, setMyClue] = useState(null)
   const [stage, setStage] = useState(0) // 0..4 to guess 5 regions in order
-  const [sharedByPlayer, setSharedByPlayer] = useState({}) // Suivi des indices partagés par joueur et stage
+  const [sharedByPlayer, setSharedByPlayer] = useState({}) // Suivi des indices partagés par joueur et stage (synchronisé)
+  const [mySharedStages, setMySharedStages] = useState(new Set()) // Suivi local de mes partages
 
   const regions = [
     {
@@ -153,12 +154,16 @@ export default function Room3({ onSubmit }) {
 
   const handleShareClue = () => {
     if (myClue) {
-      // Vérifier si ce joueur a déjà partagé son indice pour ce stage
-      const playerStageKey = `${socket.id}_${stage}`
-      if (sharedByPlayer[playerStageKey]) {
+      // Vérifier si ce joueur a déjà partagé son indice pour ce stage (vérification locale)
+      if (mySharedStages.has(stage)) {
         toast.error('Vous avez déjà partagé votre indice pour cette question !')
         return
       }
+
+      // Marquer localement que j'ai partagé pour ce stage
+      const newSharedStages = new Set(mySharedStages)
+      newSharedStages.add(stage)
+      setMySharedStages(newSharedStages)
 
       socket.emit('share-clue', {
         roomCode,
@@ -166,6 +171,7 @@ export default function Room3({ onSubmit }) {
         clueData: myClue.text
       })
       const newSharedClues = [...sharedClues, myClue.text]
+      const playerStageKey = `${socket.id}_${stage}`
       const newSharedByPlayer = {
         ...sharedByPlayer,
         [playerStageKey]: true
@@ -203,6 +209,7 @@ export default function Room3({ onSubmit }) {
         setSelectedRegion(newSelectedRegion)
         setSharedClues(newSharedClues)
         setSharedByPlayer(newSharedByPlayer)
+        setMySharedStages(new Set()) // Réinitialiser mes partages locaux
         
         // Synchroniser l'état
         syncRoomState(3, {
@@ -258,13 +265,13 @@ export default function Room3({ onSubmit }) {
               <button
                 onClick={handleShareClue}
                 className={`w-full ${
-                  sharedByPlayer[`${socket.id}_${stage}`] 
+                  mySharedStages.has(stage) 
                     ? 'bg-gray-600 cursor-not-allowed' 
                     : 'btn-secondary'
                 }`}
-                disabled={!myClue || sharedByPlayer[`${socket.id}_${stage}`]}
+                disabled={!myClue || mySharedStages.has(stage)}
               >
-                {sharedByPlayer[`${socket.id}_${stage}`] 
+                {mySharedStages.has(stage) 
                   ? '✅ Indice déjà partagé' 
                   : '📢 Partager mon indice avec l\'équipe'
                 }

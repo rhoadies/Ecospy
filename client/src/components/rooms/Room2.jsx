@@ -81,20 +81,26 @@ export default function Room2({ onSubmit }) {
     }
   }, [roomCode, currentRoom])
 
-  // Synchroniser seulement les cartes (pas l'état de jeu)
+  // Synchroniser l'état complet du jeu
   useEffect(() => {
     const unsubscribe = subscribeToRoomState(2, (stateData) => {
-      if (stateData && stateData.cards && !initializedRef.current) {
-        // Ne synchroniser que les cartes, pas l'état de jeu
-        setCards(stateData.cards)
-        initializedRef.current = true
+      if (stateData) {
+        // Synchroniser les cartes si pas encore initialisé
+        if (stateData.cards && !initializedRef.current) {
+          setCards(stateData.cards)
+          initializedRef.current = true
+        }
+        // Synchroniser l'état de jeu
+        if (stateData.flipped) setFlipped(stateData.flipped)
+        if (stateData.matched) setMatched(stateData.matched)
+        if (typeof stateData.moves === 'number') setMoves(stateData.moves)
       }
     })
 
     return unsubscribe
   }, [subscribeToRoomState])
 
-  // Logique de vérification des paires (local uniquement)
+  // Logique de vérification des paires avec synchronisation
   useEffect(() => {
     if (flipped.length === 2) {
       const [first, second] = flipped
@@ -107,18 +113,40 @@ export default function Room2({ onSubmit }) {
         (firstCard.type === 'time' && secondCard.type === 'waste' && firstCard.info === secondCard.value)
       ) {
         // Paire trouvée
-        setMoves(prevMoves => prevMoves + 1)
-        setMatched(prevMatched => [...prevMatched, first, second])
+        const newMoves = moves + 1
+        const newMatched = [...matched, first, second]
+        setMoves(newMoves)
+        setMatched(newMatched)
         setFlipped([])
+        
+        // Synchroniser l'état
+        setTimeout(() => {
+          syncRoomState(2, {
+            cards,
+            flipped: [],
+            matched: newMatched,
+            moves: newMoves
+          })
+        }, 100)
       } else {
         // Pas une paire
-        setMoves(prevMoves => prevMoves + 1)
+        const newMoves = moves + 1
+        setMoves(newMoves)
         setTimeout(() => {
           setFlipped([])
+          // Synchroniser l'état
+          setTimeout(() => {
+            syncRoomState(2, {
+              cards,
+              flipped: [],
+              matched,
+              moves: newMoves
+            })
+          }, 100)
         }, 1000)
       }
     }
-  }, [flipped, cards])
+  }, [flipped, cards, matched, moves, syncRoomState])
 
   useEffect(() => {
     // Vérifier si toutes les paires sont trouvées
@@ -135,6 +163,14 @@ export default function Room2({ onSubmit }) {
     }
     const newFlipped = [...flipped, index]
     setFlipped(newFlipped)
+    
+    // Synchroniser immédiatement le clic
+    syncRoomState(2, {
+      cards,
+      flipped: newFlipped,
+      matched,
+      moves
+    })
   }
 
   return (
