@@ -62,20 +62,30 @@ export default function Room2({ onSubmit }) {
     }
   }, [])
 
-  // Synchroniser les changements d'état
+  // Synchroniser les changements d'état (sans créer de boucles)
   useEffect(() => {
     const unsubscribe = subscribeToRoomState(2, (stateData) => {
       if (stateData) {
-        setCards(stateData.cards || [])
-        setFlipped(stateData.flipped || [])
-        setMatched(stateData.matched || [])
-        setMoves(stateData.moves || 0)
+        // Ne synchroniser que si l'état est différent pour éviter les boucles
+        if (JSON.stringify(stateData.cards) !== JSON.stringify(cards)) {
+          setCards(stateData.cards || [])
+        }
+        if (JSON.stringify(stateData.flipped) !== JSON.stringify(flipped)) {
+          setFlipped(stateData.flipped || [])
+        }
+        if (JSON.stringify(stateData.matched) !== JSON.stringify(matched)) {
+          setMatched(stateData.matched || [])
+        }
+        if (stateData.moves !== moves) {
+          setMoves(stateData.moves || 0)
+        }
       }
     })
 
     return unsubscribe
-  }, [subscribeToRoomState])
+  }, [subscribeToRoomState, cards, flipped, matched, moves])
 
+  // Logique de vérification des paires avec synchronisation différée
   useEffect(() => {
     if (flipped.length === 2) {
       const newMoves = moves + 1
@@ -93,23 +103,27 @@ export default function Room2({ onSubmit }) {
         setMatched(newMatched)
         setFlipped([])
         
-        // Synchroniser l'état
-        syncRoomState(2, {
-          cards,
-          flipped: [],
-          matched: newMatched,
-          moves: newMoves
-        })
-      } else {
+        // Synchroniser après la mise à jour de l'état
         setTimeout(() => {
-          setFlipped([])
-          // Synchroniser l'état après le timeout
           syncRoomState(2, {
             cards,
             flipped: [],
-            matched,
+            matched: newMatched,
             moves: newMoves
           })
+        }, 100)
+      } else {
+        setTimeout(() => {
+          setFlipped([])
+          // Synchroniser après le timeout
+          setTimeout(() => {
+            syncRoomState(2, {
+              cards,
+              flipped: [],
+              matched,
+              moves: newMoves
+            })
+          }, 100)
         }, 1000)
       }
     }
@@ -131,7 +145,7 @@ export default function Room2({ onSubmit }) {
     const newFlipped = [...flipped, index]
     setFlipped(newFlipped)
     
-    // Synchroniser l'état immédiatement
+    // Synchroniser seulement le clic, pas toute la logique de jeu
     syncRoomState(2, {
       cards,
       flipped: newFlipped,

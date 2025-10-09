@@ -14,6 +14,7 @@ export default function Room3({ onSubmit }) {
   const [sharedClues, setSharedClues] = useState([])
   const [myClue, setMyClue] = useState(null)
   const [stage, setStage] = useState(0) // 0..4 to guess 5 regions in order
+  const [sharedByPlayer, setSharedByPlayer] = useState({}) // Suivi des indices partagés par joueur et stage
 
   const regions = [
     {
@@ -103,11 +104,13 @@ export default function Room3({ onSubmit }) {
       setSelectedRegion(existingState.selectedRegion || '')
       setSharedClues(existingState.sharedClues || [])
       setStage(existingState.stage || 0)
+      setSharedByPlayer(existingState.sharedByPlayer || {})
     } else {
       const initialState = {
         selectedRegion: '',
         sharedClues: [],
-        stage: 0
+        stage: 0,
+        sharedByPlayer: {}
       }
       initializeRoomState(3, initialState)
     }
@@ -120,6 +123,7 @@ export default function Room3({ onSubmit }) {
         setSelectedRegion(stateData.selectedRegion || '')
         setSharedClues(stateData.sharedClues || [])
         setStage(stateData.stage || 0)
+        setSharedByPlayer(stateData.sharedByPlayer || {})
       }
     })
 
@@ -149,19 +153,32 @@ export default function Room3({ onSubmit }) {
 
   const handleShareClue = () => {
     if (myClue) {
+      // Vérifier si ce joueur a déjà partagé son indice pour ce stage
+      const playerStageKey = `${socket.id}_${stage}`
+      if (sharedByPlayer[playerStageKey]) {
+        toast.error('Vous avez déjà partagé votre indice pour cette question !')
+        return
+      }
+
       socket.emit('share-clue', {
         roomCode,
         playerId: socket.id,
         clueData: myClue.text
       })
       const newSharedClues = [...sharedClues, myClue.text]
+      const newSharedByPlayer = {
+        ...sharedByPlayer,
+        [playerStageKey]: true
+      }
       setSharedClues(newSharedClues)
+      setSharedByPlayer(newSharedByPlayer)
       
       // Synchroniser l'état
       syncRoomState(3, {
         selectedRegion,
         sharedClues: newSharedClues,
-        stage
+        stage,
+        sharedByPlayer: newSharedByPlayer
       })
     }
   }
@@ -181,15 +198,18 @@ export default function Room3({ onSubmit }) {
         const newStage = nextStage
         const newSelectedRegion = ''
         const newSharedClues = []
+        const newSharedByPlayer = {} // Réinitialiser les indices partagés pour le nouveau stage
         setStage(newStage)
         setSelectedRegion(newSelectedRegion)
         setSharedClues(newSharedClues)
+        setSharedByPlayer(newSharedByPlayer)
         
         // Synchroniser l'état
         syncRoomState(3, {
           selectedRegion: newSelectedRegion,
           sharedClues: newSharedClues,
-          stage: newStage
+          stage: newStage,
+          sharedByPlayer: newSharedByPlayer
         })
       }
     } else {
@@ -237,10 +257,17 @@ export default function Room3({ onSubmit }) {
 
               <button
                 onClick={handleShareClue}
-                className="w-full btn-secondary"
-                disabled={!myClue}
+                className={`w-full ${
+                  sharedByPlayer[`${socket.id}_${stage}`] 
+                    ? 'bg-gray-600 cursor-not-allowed' 
+                    : 'btn-secondary'
+                }`}
+                disabled={!myClue || sharedByPlayer[`${socket.id}_${stage}`]}
               >
-                📢 Partager mon indice avec l'équipe
+                {sharedByPlayer[`${socket.id}_${stage}`] 
+                  ? '✅ Indice déjà partagé' 
+                  : '📢 Partager mon indice avec l\'équipe'
+                }
               </button>
             </div>
 
@@ -304,7 +331,8 @@ export default function Room3({ onSubmit }) {
                           syncRoomState(3, {
                             selectedRegion: newSelectedRegion,
                             sharedClues,
-                            stage
+                            stage,
+                            sharedByPlayer
                           })
                         }}
                         className="sr-only"
