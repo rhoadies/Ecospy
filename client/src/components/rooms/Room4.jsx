@@ -148,7 +148,7 @@ export default function Room4({ onSubmit }) {
   const co2Total = getTotalCO2()
   const avgCost = getAverageCost()
   const meetsBudget = parseFloat(avgCost) <= budgetLimit
-  const meetsRenewables = renewablePercentage >= 60
+  const meetsRenewables = renewablePercentage === 60
   const canSubmit = isValid && meetsRenewables && meetsBudget
 
   return (
@@ -174,7 +174,7 @@ export default function Room4({ onSubmit }) {
               Le pourcentage total d'énergies renouvelables est le code final !
             </p>
             <p className="text-yellow-300 text-sm mt-2">
-              🎯 Objectif : Atteindre 100% de production totale avec au moins 60% de renouvelables
+              🎯 Objectif : Atteindre 100% de production totale avec exactement 60% de renouvelables
             </p>
           </div>
         </div>
@@ -197,10 +197,34 @@ export default function Room4({ onSubmit }) {
             <div className="text-center">
               <p className="text-gray-400 text-sm mb-1">Énergies renouvelables</p>
               <p className={`text-3xl font-bold ${
-                meetsRenewables ? 'text-primary' : 'text-yellow-500'
+                meetsRenewables ? 'text-primary' : 
+                renewablePercentage > 60 ? 'text-red-500' :
+                renewablePercentage >= 55 ? 'text-yellow-500' : 'text-gray-400'
               }`}>
                 {renewablePercentage}%
               </p>
+              {!meetsRenewables && renewablePercentage !== 60 && (
+                <p className="text-xs text-gray-500 mt-1">
+                  {renewablePercentage > 60 ? 'Trop élevé' : 
+                   renewablePercentage >= 55 ? 'Proche de 60%' : 'Objectif : 60%'}
+                </p>
+              )}
+              {/* Barre de progression vers 60% */}
+              <div className="mt-2 w-full bg-gray-700 rounded-full h-2">
+                <div 
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    meetsRenewables ? 'bg-primary' : 
+                    renewablePercentage > 60 ? 'bg-red-500' :
+                    renewablePercentage >= 55 ? 'bg-yellow-500' : 'bg-gray-500'
+                  }`}
+                  style={{ width: `${Math.min(renewablePercentage, 100)}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>0%</span>
+                <span className="font-bold text-primary">60%</span>
+                <span>100%</span>
+              </div>
             </div>
           </div>
 
@@ -311,22 +335,31 @@ export default function Room4({ onSubmit }) {
               <div className="text-center mb-4">
                 <p className="text-gray-400 mb-2">Code final (% d'énergies renouvelables) :</p>
                 <div className={`text-5xl font-bold ${
-                  canSubmit ? 'text-primary' : 'text-yellow-500'
+                  canSubmit ? 'text-primary' : 
+                  renewablePercentage === 60 ? 'text-yellow-500' :
+                  renewablePercentage > 60 ? 'text-red-500' : 'text-yellow-500'
                 }`}>
                   {renewablePercentage}%
                 </div>
+                {renewablePercentage !== 60 && (
+                  <p className="text-sm text-gray-500 mt-2">
+                    {renewablePercentage > 60 ? '❌ Trop élevé - Objectif : 60%' : 
+                     renewablePercentage >= 55 ? '⚠️ Proche - Objectif : 60%' : 
+                     '⚠️ Objectif : 60%'}
+                  </p>
+                )}
               </div>
 
               {canSubmit ? (
                 <div className="text-center mb-4">
                   <p className="text-primary font-semibold">
-                    ✅ Mix valide : contraintes de production, de budget et de renouvelables respectées.
+                    ✅ Mix valide : 100% de production, budget respecté et exactement 60% de renouvelables.
                   </p>
                 </div>
               ) : (
                 <div className="text-center mb-4">
                   <ul className="text-sm text-yellow-400 space-y-1">
-                    {!meetsRenewables && <li>• Atteignez au moins 60% de renouvelables</li>}
+                    {!meetsRenewables && <li>• Atteignez exactement 60% de renouvelables</li>}
                     {!meetsBudget && <li>• Respectez le budget (coût ≤ {budgetLimit})</li>}
                   </ul>
                 </div>
