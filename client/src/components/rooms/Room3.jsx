@@ -371,7 +371,7 @@ export default function Room3({ onSubmit }) {
                     </div>
                     
                     {/* 5. Taïga (Russie/Canada - hautes latitudes) */}
-                    <div className="absolute" style={{ left: '15%', top: '10%' }}>
+                    <div className="absolute" style={{ left: '15%', top: '5%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">5</span>
