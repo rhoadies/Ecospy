@@ -23,8 +23,6 @@ export default function Room3({ onSubmit }) {
       id: 'amazonie',
       name: 'Amazonie',
       icon: '🌳',
-      location: 'Amérique du Sud (Brésil)',
-      hectares: '5.5M km²',
       data: {
         deforestation: '17%',
         area: '5.5M km²',
@@ -35,8 +33,6 @@ export default function Room3({ onSubmit }) {
       id: 'congo',
       name: 'Bassin du Congo',
       icon: '🦍',
-      location: 'Afrique centrale',
-      hectares: '3.7M km²',
       data: {
         deforestation: '5%',
         area: '3.7M km²',
@@ -47,8 +43,6 @@ export default function Room3({ onSubmit }) {
       id: 'indonesie',
       name: 'Indonésie',
       icon: '🐅',
-      location: 'Asie du Sud-Est',
-      hectares: '0.9M km²',
       data: {
         deforestation: '24%',
         area: '0.9M km²',
@@ -59,8 +53,6 @@ export default function Room3({ onSubmit }) {
       id: 'atlantique',
       name: 'Forêt Atlantique',
       icon: '🦜',
-      location: 'Brésil (côte atlantique)',
-      hectares: '0.1M km²',
       data: {
         deforestation: '88%',
         area: '0.1M km²',
@@ -71,8 +63,6 @@ export default function Room3({ onSubmit }) {
       id: 'taiga',
       name: 'Taïga (boréale)',
       icon: '🐺',
-      location: 'Russie/Canada',
-      hectares: '13M km²',
       data: {
         deforestation: '3%',
         area: '13M km²',
@@ -311,12 +301,12 @@ export default function Room3({ onSubmit }) {
 
                 <div className="bg-gray-800 rounded-lg p-6 mb-4">
                   {/* Carte du monde avec image réelle */}
-                  <div className="relative w-full h-[500px] bg-gray-700 rounded-lg overflow-hidden mb-4">
-                    {/* Image de carte du monde haute résolution */}
+                  <div className="relative w-full h-96 bg-gray-700 rounded-lg overflow-hidden mb-4">
+                    {/* Image de carte du monde */}
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/World_map_-_low_resolution.svg/1200px-World_map_-_low_resolution.svg.png"
-                      alt="Carte du monde - Régions de déforestation"
-                      className="w-full h-full object-cover opacity-90"
+                      alt="Carte du monde"
+                      className="w-full h-full object-cover opacity-80"
                       onError={(e) => {
                         // Fallback si l'image ne charge pas
                         e.target.style.display = 'none'
@@ -331,113 +321,132 @@ export default function Room3({ onSubmit }) {
                       </div>
                     </div>
                     
-                    {/* Points numérotés sur la carte - Positions plus précises */}
+                    {/* Points numérotés sur la carte */}
                     {/* 1. Amazonie (Brésil) - Amérique du Sud */}
-                    <div className="absolute" style={{ left: '28%', top: '68%' }}>
-                      <div className="relative group">
-                        <div className="w-8 h-8 bg-red-500 rounded-full border-3 border-white flex items-center justify-center shadow-xl animate-pulse">
+                    <div className="absolute" style={{ left: '25%', top: '65%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">1</span>
                         </div>
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                          <strong>1. Amazonie</strong><br/>
-                          <span className="text-xs text-gray-300">Brésil - 17% déforestation</span>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Amazonie
                         </div>
                       </div>
                     </div>
                     
                     {/* 2. Congo (Afrique centrale) */}
-                    <div className="absolute" style={{ left: '52%', top: '58%' }}>
-                      <div className="relative group">
-                        <div className="w-8 h-8 bg-orange-500 rounded-full border-3 border-white flex items-center justify-center shadow-xl animate-pulse">
+                    <div className="absolute" style={{ left: '52%', top: '55%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">2</span>
                         </div>
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                          <strong>2. Congo</strong><br/>
-                          <span className="text-xs text-gray-300">Afrique - 5% déforestation</span>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Congo
                         </div>
                       </div>
                     </div>
                     
-                    {/* 3. Indonésie (Asie du Sud-Est) */}
-                    <div className="absolute" style={{ left: '78%', top: '65%' }}>
-                      <div className="relative group">
-                        <div className="w-8 h-8 bg-red-600 rounded-full border-3 border-white flex items-center justify-center shadow-xl animate-pulse">
+                    {/* 3. Bornéo (Asie du Sud-Est) */}
+                    <div className="absolute" style={{ left: '75%', top: '60%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">3</span>
                         </div>
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                          <strong>3. Indonésie</strong><br/>
-                          <span className="text-xs text-gray-300">Asie - 24% déforestation</span>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Bornéo
                         </div>
                       </div>
                     </div>
                     
-                    {/* 4. Forêt Atlantique (Brésil) */}
-                    <div className="absolute" style={{ left: '30%', top: '75%' }}>
-                      <div className="relative group">
-                        <div className="w-8 h-8 bg-red-700 rounded-full border-3 border-white flex items-center justify-center shadow-xl animate-pulse">
+                    {/* 4. Sumatra (Indonésie) */}
+                    <div className="absolute" style={{ left: '72%', top: '65%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">4</span>
                         </div>
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                          <strong>4. Forêt Atlantique</strong><br/>
-                          <span className="text-xs text-gray-300">Brésil - 88% déforestation</span>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Sumatra
                         </div>
                       </div>
                     </div>
                     
-                    {/* 5. Taïga (Russie/Canada) */}
-                    <div className="absolute" style={{ left: '20%', top: '25%' }}>
-                      <div className="relative group">
-                        <div className="w-8 h-8 bg-green-500 rounded-full border-3 border-white flex items-center justify-center shadow-xl animate-pulse">
+                    {/* 5. Madagascar */}
+                    <div className="absolute" style={{ left: '58%', top: '70%' }}>
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">5</span>
                         </div>
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                          <strong>5. Taïga</strong><br/>
-                          <span className="text-xs text-gray-300">Russie/Canada - 3% déforestation</span>
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                          Madagascar
                         </div>
                       </div>
                     </div>
                   </div>
     
-                  {/* Légende améliorée */}
-                  <div className="bg-gradient-to-r from-gray-800 to-gray-700 rounded-lg p-4 border border-gray-600">
-                    <h4 className="text-white font-bold mb-3 text-lg flex items-center gap-2">
-                      🌍 Légende des régions de déforestation
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {regions.map((region, index) => (
-                        <div key={region.id} className="flex items-center gap-3 p-2 rounded-lg bg-gray-600/50 hover:bg-gray-600/70 transition-colors">
-                          <div className={`w-6 h-6 rounded-full border-2 border-white flex items-center justify-center shadow-lg ${
-                            index === 0 ? 'bg-red-500' :
-                            index === 1 ? 'bg-orange-500' :
-                            index === 2 ? 'bg-red-600' :
-                            index === 3 ? 'bg-red-700' :
-                            'bg-green-500'
-                          }`}>
-                            <span className="text-white text-xs font-bold">{index + 1}</span>
-                          </div>
-                          <div className="flex-1">
-                            <div className="text-white font-semibold text-sm">{region.name}</div>
-                            <div className="text-gray-300 text-xs">{region.location}</div>
-                            <div className="text-xs text-gray-400">
-                              {region.data.deforestation} déforestation • {region.data.area}
-                            </div>
-                          </div>
-                          <div className={`px-2 py-1 rounded text-xs font-semibold ${
-                            region.data.critical 
-                              ? 'bg-red-500/20 text-red-400 border border-red-500' 
-                              : 'bg-green-500/20 text-green-400 border border-green-500'
-                          }`}>
-                            {region.data.critical ? '⚠️ Critique' : '✅ Stable'}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+    {/* Légende */}
+    <div className="absolute top-4 left-4 bg-black/70 rounded-lg p-3">
+      <h4 className="text-white font-bold mb-2">🌍 Régions de déforestation</h4>
+      <div className="space-y-1 text-xs text-gray-300">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>1. Amazonie (Brésil)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>2. Congo (Afrique)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>3. Bornéo (Asie)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>4. Sumatra (Indonésie)</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <span>5. Madagascar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  {/* Détails des régions */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {regions.map((region, index) => (
+      <div
+        key={region.id}
+        className="bg-gray-700 rounded-lg p-4 border-2 border-gray-600"
+      >
+        <div className="flex items-start gap-3">
+          <div className="flex items-center justify-center w-8 h-8 bg-red-500 rounded-full text-white font-bold text-sm">
+            {index + 1}
+          </div>
+          <div className="flex-1">
+            <h4 className="text-lg font-bold text-white mb-1">{region.name}</h4>
+            <p className="text-sm text-gray-300 mb-2">{region.location}</p>
+            <div className="bg-red-500/20 border border-red-500 rounded px-2 py-1 inline-block">
+              <span className="text-red-400 text-xs font-semibold">
+                🌳 {region.hectares}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
+    <p className="text-blue-400 text-sm">
+      <strong>Astuce :</strong> Utilisez cette carte pour identifier les régions mentionnées 
+      dans les indices partagés par votre équipe !
+    </p>
+  </div>
+</div>
+</motion.div>
+</motion.div>
+)}
+</AnimatePresence>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Panneau des indices */}

@@ -95,88 +95,50 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-primary-200/20 rounded-full blur-xl animate-float"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-secondary-200/20 rounded-full blur-xl animate-float" style={{animationDelay: '1s'}}></div>
-        <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-accent-200/20 rounded-full blur-xl animate-float" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-40 right-1/4 w-28 h-28 bg-primary-300/20 rounded-full blur-xl animate-float" style={{animationDelay: '3s'}}></div>
-      </div>
-
+    <div className="min-h-screen flex items-center justify-center p-4">
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="max-w-5xl w-full relative z-10"
+        className="max-w-4xl w-full"
       >
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <motion.div
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="space-y-6"
           >
-            {/* Logo et titre principal */}
-            <div className="relative">
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-primary-400 to-primary-600 rounded-3xl shadow-glow mb-6 animate-bounce-gentle">
-                <span className="text-4xl">🌍</span>
-              </div>
-              <h1 className="text-7xl font-black mb-4 bg-gradient-to-r from-primary-600 via-primary-500 to-secondary-500 bg-clip-text text-transparent text-shadow-lg">
-                EcoSpy
-              </h1>
-              <h2 className="text-4xl font-bold text-neutral-700 mb-6">
-                Mission Climat
-              </h2>
-            </div>
+            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-green-400 to-primary bg-clip-text text-transparent">
+              🌍 EcoSpy
+            </h1>
+            <h2 className="text-3xl font-semibold text-gray-300 mb-4">
+              Mission Climat
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Infiltrez la base d'une méga-corporation qui cache des données sur la pollution. 
+              4 salles, 4 énigmes, 20 minutes pour sauver la planète !
+            </p>
+          </motion.div>
 
-            {/* Description */}
-            <div className="max-w-3xl mx-auto">
-              <p className="text-xl text-neutral-600 leading-relaxed mb-8">
-                Infiltrez la base d'une méga-corporation qui cache des données sur la pollution. 
-                <span className="font-semibold text-primary-600">4 salles, 4 énigmes, 20 minutes</span> pour sauver la planète !
-              </p>
-              
-              {/* Features */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="section-feature text-center">
-                  <div className="text-3xl mb-3">🎮</div>
-                  <h3 className="font-bold text-neutral-800 mb-2">Coopératif</h3>
-                  <p className="text-sm text-neutral-600">1 à 4 joueurs</p>
-                </div>
-                <div className="section-feature text-center">
-                  <div className="text-3xl mb-3">⏱️</div>
-                  <h3 className="font-bold text-neutral-800 mb-2">Rapide</h3>
-                  <p className="text-sm text-neutral-600">20 minutes max</p>
-                </div>
-                <div className="section-feature text-center">
-                  <div className="text-3xl mb-3">🌱</div>
-                  <h3 className="font-bold text-neutral-800 mb-2">Éducatif</h3>
-                  <p className="text-sm text-neutral-600">Thème environnement</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Statut de connexion */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="inline-flex items-center px-4 py-2 rounded-full"
-            >
-              {connected ? (
-                <span className="inline-flex items-center text-primary-600 bg-primary-100 px-4 py-2 rounded-full font-medium">
-                  <span className="w-3 h-3 bg-primary-500 rounded-full mr-2 animate-pulse"></span>
-                  Connecté au serveur
-                </span>
-              ) : (
-                <span className="inline-flex items-center text-accent-600 bg-accent-100 px-4 py-2 rounded-full font-medium">
-                  <span className="w-3 h-3 bg-accent-500 rounded-full mr-2 animate-pulse"></span>
-                  Connexion en cours...
-                </span>
-              )}
-            </motion.div>
+          {/* Statut de connexion */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mt-6"
+          >
+            {connected ? (
+              <span className="inline-flex items-center text-primary">
+                <span className="w-3 h-3 bg-primary rounded-full mr-2 animate-pulse"></span>
+                Connecté au serveur
+              </span>
+            ) : (
+              <span className="inline-flex items-center text-yellow-500">
+                <span className="w-3 h-3 bg-yellow-500 rounded-full mr-2 animate-pulse"></span>
+                Connexion en cours...
+              </span>
+            )}
           </motion.div>
         </div>
 
@@ -185,253 +147,165 @@ export default function Home() {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="card-elevated max-w-lg mx-auto"
+          className="card max-w-md mx-auto"
         >
           {!mode ? (
             // Sélection du mode
-            <div className="space-y-6">
-              <div className="text-center">
-                <h3 className="text-3xl font-bold text-neutral-800 mb-2">Commencer l'aventure</h3>
-                <p className="text-neutral-600">Choisissez votre mode de jeu</p>
-              </div>
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold text-center mb-6">Commencer</h3>
               
-              <div className="space-y-4">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setMode('create')}
-                  className="w-full btn-primary py-4 text-lg hover-lift"
-                >
-                  <span className="flex items-center justify-center gap-3">
-                    <span className="text-2xl">🎮</span>
-                    <span>Créer une partie</span>
-                  </span>
-                </motion.button>
-                
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setMode('join')}
-                  className="w-full btn-secondary py-4 text-lg hover-lift"
-                >
-                  <span className="flex items-center justify-center gap-3">
-                    <span className="text-2xl">👥</span>
-                    <span>Rejoindre une partie</span>
-                  </span>
-                </motion.button>
+              <button
+                onClick={() => setMode('create')}
+                className="w-full btn-primary py-4 text-lg"
+              >
+                🎮 Créer une partie
+              </button>
+              
+              <button
+                onClick={() => setMode('join')}
+                className="w-full btn-secondary py-4 text-lg"
+              >
+                👥 Rejoindre une partie
+              </button>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setMode('public')}
-                  className="w-full btn-accent py-4 text-lg hover-lift"
-                >
-                  <span className="flex items-center justify-center gap-3">
-                    <span className="text-2xl">🌐</span>
-                    <span>Lobby public</span>
-                  </span>
-                </motion.button>
-              </div>
+              <button
+                onClick={() => setMode('public')}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 text-lg rounded-lg transition-all duration-300"
+              >
+                🌐 Rejoindre un lobby public
+              </button>
 
               {/* Info */}
-              <div className="section-info">
-                <h4 className="font-bold text-neutral-800 mb-3 flex items-center gap-2">
-                  <span className="text-xl">ℹ️</span>
-                  <span>Informations du jeu</span>
-                </h4>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary-500">👥</span>
-                    <span className="text-neutral-600">1 à 4 joueurs</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary-500">⏱️</span>
-                    <span className="text-neutral-600">20 minutes</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary-500">🤝</span>
-                    <span className="text-neutral-600">Coopération</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-primary-500">🌱</span>
-                    <span className="text-neutral-600">Environnement</span>
-                  </div>
-                </div>
+              <div className="mt-8 p-4 bg-gray-900 rounded-lg border border-gray-700">
+                <h4 className="font-semibold text-primary mb-2">ℹ️ Informations</h4>
+                <ul className="text-sm text-gray-400 space-y-1">
+                  <li>• 1 à 4 joueurs</li>
+                  <li>• Durée : 20 minutes</li>
+                  <li>• Coopération requise</li>
+                  <li>• Thème : Environnement</li>
+                </ul>
               </div>
             </div>
           ) : mode === 'create' ? (
             // Formulaire de création
-            <div className="space-y-6">
-              <div className="flex items-center gap-4 mb-6">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setMode(null)}
-                  className="text-neutral-500 hover:text-neutral-700 text-2xl"
-                >
-                  ←
-                </motion.button>
-                <div>
-                  <h3 className="text-2xl font-bold text-neutral-800">Créer une partie</h3>
-                  <p className="text-neutral-600 text-sm">Vous serez l'hôte de la partie</p>
-                </div>
-              </div>
+            <div className="space-y-4">
+              <button
+                onClick={() => setMode(null)}
+                className="text-gray-400 hover:text-white mb-4"
+              >
+                ← Retour
+              </button>
               
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold text-neutral-700 mb-2">
-                    Votre nom d'agent
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Agent Smith"
-                    className="input text-center"
-                    maxLength={20}
-                    onKeyPress={(e) => e.key === 'Enter' && handleCreateRoom()}
-                  />
-                </div>
-
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleCreateRoom}
-                  disabled={!connected || !name.trim()}
-                  className="w-full btn-primary py-4 text-lg hover-lift"
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    <span>🚀</span>
-                    <span>Créer la partie</span>
-                  </span>
-                </motion.button>
+              <h3 className="text-2xl font-bold mb-6">Créer une partie</h3>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Votre nom</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Agent Smith"
+                  className="input"
+                  maxLength={20}
+                  onKeyPress={(e) => e.key === 'Enter' && handleCreateRoom()}
+                />
               </div>
+
+              <button
+                onClick={handleCreateRoom}
+                disabled={!connected || !name.trim()}
+                className="w-full btn-primary py-4 text-lg"
+              >
+                Créer la partie
+              </button>
             </div>
           ) : mode === 'join' ? (
             // Formulaire de connexion
-            <div className="space-y-6">
-              <div className="flex items-center gap-4 mb-6">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setMode(null)}
-                  className="text-neutral-500 hover:text-neutral-700 text-2xl"
-                >
-                  ←
-                </motion.button>
-                <div>
-                  <h3 className="text-2xl font-bold text-neutral-800">Rejoindre une partie</h3>
-                  <p className="text-neutral-600 text-sm">Entrez le code de la partie</p>
-                </div>
-              </div>
+            <div className="space-y-4">
+              <button
+                onClick={() => setMode(null)}
+                className="text-gray-400 hover:text-white mb-4"
+              >
+                ← Retour
+              </button>
               
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold text-neutral-700 mb-2">
-                    Votre nom d'agent
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Agent Smith"
-                    className="input text-center"
-                    maxLength={20}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-neutral-700 mb-2">
-                    Code de la partie
-                  </label>
-                  <input
-                    type="text"
-                    value={joinCode}
-                    onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                    placeholder="ABC123"
-                    className="input uppercase text-center text-2xl tracking-widest font-mono"
-                    maxLength={6}
-                    onKeyPress={(e) => e.key === 'Enter' && handleJoinRoom()}
-                  />
-                </div>
-
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleJoinRoom}
-                  disabled={!connected || !name.trim() || !joinCode.trim()}
-                  className="w-full btn-secondary py-4 text-lg hover-lift"
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    <span>🔑</span>
-                    <span>Rejoindre</span>
-                  </span>
-                </motion.button>
+              <h3 className="text-2xl font-bold mb-6">Rejoindre une partie</h3>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Votre nom</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Agent Smith"
+                  className="input"
+                  maxLength={20}
+                />
               </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Code de la partie</label>
+                <input
+                  type="text"
+                  value={joinCode}
+                  onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                  placeholder="ABC123"
+                  className="input uppercase text-center text-2xl tracking-widest"
+                  maxLength={6}
+                  onKeyPress={(e) => e.key === 'Enter' && handleJoinRoom()}
+                />
+              </div>
+
+              <button
+                onClick={handleJoinRoom}
+                disabled={!connected || !name.trim() || !joinCode.trim()}
+                className="w-full btn-secondary py-4 text-lg"
+              >
+                Rejoindre
+              </button>
             </div>
           ) : (
             // Formulaire lobby public
-            <div className="space-y-6">
-              <div className="flex items-center gap-4 mb-6">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setMode(null)}
-                  className="text-neutral-500 hover:text-neutral-700 text-2xl"
-                >
-                  ←
-                </motion.button>
-                <div>
-                  <h3 className="text-2xl font-bold text-neutral-800">🌐 Lobby Public</h3>
-                  <p className="text-neutral-600 text-sm">Rejoignez d'autres joueurs</p>
-                </div>
-              </div>
+            <div className="space-y-4">
+              <button
+                onClick={() => setMode(null)}
+                className="text-gray-400 hover:text-white mb-4"
+              >
+                ← Retour
+              </button>
               
-              <div className="section-info">
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl">🌐</span>
-                  <div>
-                    <h4 className="font-semibold text-neutral-800 mb-1">Lobby automatique</h4>
-                    <p className="text-sm text-neutral-600">
-                      Rejoignez automatiquement un lobby avec d'autres joueurs en attente !
-                    </p>
-                  </div>
-                </div>
+              <h3 className="text-2xl font-bold mb-6">🌐 Lobby Public</h3>
+              
+              <div className="bg-purple-500/10 border border-purple-500 rounded-lg p-4 mb-4">
+                <p className="text-purple-300 text-sm">
+                  Rejoignez automatiquement un lobby avec d'autres joueurs en attente !
+                </p>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold text-neutral-700 mb-2">
-                    Votre nom d'agent
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Agent Smith"
-                    className="input text-center"
-                    maxLength={20}
-                    onKeyPress={(e) => e.key === 'Enter' && handleJoinPublicRoom()}
-                  />
-                </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Votre nom</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Agent Smith"
+                  className="input"
+                  maxLength={20}
+                  onKeyPress={(e) => e.key === 'Enter' && handleJoinPublicRoom()}
+                />
+              </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleJoinPublicRoom}
-                  disabled={!connected || !name.trim()}
-                  className="w-full btn-accent py-4 text-lg hover-lift"
-                >
-                  <span className="flex items-center justify-center gap-2">
-                    <span>🔍</span>
-                    <span>Trouver un lobby</span>
-                  </span>
-                </motion.button>
+              <button
+                onClick={handleJoinPublicRoom}
+                disabled={!connected || !name.trim()}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 text-lg rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Trouver un lobby
+              </button>
 
-                <div className="text-center text-sm text-neutral-500 bg-neutral-50 rounded-lg p-3">
-                  <p>Vous serez mis en relation avec d'autres joueurs</p>
-                  <p>ou un nouveau lobby sera créé pour vous.</p>
-                </div>
+              <div className="text-center text-sm text-gray-400">
+                <p>Vous serez mis en relation avec d'autres joueurs</p>
+                <p>ou un nouveau lobby sera créé pour vous.</p>
               </div>
             </div>
           )}
@@ -442,13 +316,10 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center mt-12"
+          className="text-center mt-8 text-gray-500 text-sm"
         >
-          <div className="inline-flex items-center gap-2 text-neutral-500 text-sm bg-neutral-100 px-4 py-2 rounded-full">
-            <span className="w-2 h-2 bg-primary-400 rounded-full"></span>
-            <span>Workshop M1 2025-2026 - EPSI/WIS</span>
-          </div>
-          <p className="mt-2 text-neutral-400 text-xs">Escape Game Éducatif sur l'Environnement</p>
+          <p>Workshop M1 2025-2026 - EPSI/WIS</p>
+          <p className="mt-1">Escape Game Éducatif sur l'Environnement</p>
         </motion.div>
       </motion.div>
     </div>
