@@ -62,13 +62,4 @@ PORT=5000
 CLIENT_URL=http://localhost:3000
 ```
 
-## 📝 Livrables Workshop
-- docs/rapport-technique.md (modèle)
-- docs/poster-A3.md (modèle)
-- docs/presentation-outline.md (trame PPT)
-- SUMMARY.md (résumé exécutif)
-- STATUS.md (état & planning)
-- INDEX.md (index des fichiers)
-
-
-Bonne mission ! 🚀
+�
