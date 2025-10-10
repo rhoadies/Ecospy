@@ -346,38 +346,38 @@ export default function Room3({ onSubmit }) {
                       </div>
                     </div>
                     
-                    {/* 3. Bornéo (Asie du Sud-Est) */}
+                    {/* 3. Indonésie (Asie du Sud-Est) */}
                     <div className="absolute" style={{ left: '75%', top: '60%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">3</span>
                         </div>
                         <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                          Bornéo
+                          Indonésie
                         </div>
                       </div>
                     </div>
                     
-                    {/* 4. Sumatra (Indonésie) */}
+                    {/* 4. Forêt Atlantique (Brésil) */}
                     <div className="absolute" style={{ left: '72%', top: '65%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">4</span>
                         </div>
                         <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                          Sumatra
+                          Forêt Atlantique
                         </div>
                       </div>
                     </div>
                     
-                    {/* 5. Madagascar */}
+                    {/* 5. Taïga (Russie/Canada) */}
                     <div className="absolute" style={{ left: '58%', top: '70%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">5</span>
                         </div>
                         <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                          Madagascar
+                          Taïga
                         </div>
                       </div>
                     </div>
@@ -397,22 +397,22 @@ export default function Room3({ onSubmit }) {
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-          <span>3. Bornéo (Asie)</span>
+          <span>3. Indonésie (Asie)</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-          <span>4. Sumatra (Indonésie)</span>
+          <span>4. Forêt Atlantique (Brésil)</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-          <span>5. Madagascar</span>
+          <span>5. Taïga (Russie/Canada)</span>
         </div>
       </div>
     </div>
   </div>
   
   {/* Détails des régions */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
     {regions.map((region, index) => (
       <div
         key={region.id}
