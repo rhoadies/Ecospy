@@ -1,48 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-dark text-white font-sans antialiased;
+  * {
+    @apply border-neutral-200;
   }
 
-  * {
-    @apply border-gray-700;
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background-main text-neutral-800 font-sans antialiased;
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.05) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
+  }
+
+  /* Amélioration de la lisibilité */
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   }
 }
 
 @layer components {
+  /* Boutons modernes et attrayants */
   .btn-primary {
-    @apply bg-primary hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 
+           text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 
+           transform hover:scale-105 hover:shadow-glow active:scale-95
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+           shadow-medium border border-primary-400/20;
   }
 
   .btn-secondary {
-    @apply bg-secondary hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg;
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 
+           text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 
+           transform hover:scale-105 hover:shadow-lg active:scale-95
+           shadow-medium border border-secondary-400/20;
+  }
+
+  .btn-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 
+           text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 
+           transform hover:scale-105 hover:shadow-lg active:scale-95
+           shadow-medium border border-accent-400/20;
   }
 
   .btn-danger {
-    @apply bg-danger hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300;
+    @apply bg-gradient-to-r from-danger-500 to-danger-600 hover:from-danger-600 hover:to-danger-700 
+           text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 
+           transform hover:scale-105 hover:shadow-lg active:scale-95
+           shadow-medium border border-danger-400/20;
   }
 
+  .btn-outline {
+    @apply bg-transparent border-2 border-primary-500 text-primary-600 hover:bg-primary-500 hover:text-white 
+           font-semibold py-3 px-6 rounded-xl transition-all duration-300 
+           transform hover:scale-105 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent hover:bg-primary-50 text-primary-600 hover:text-primary-700 
+           font-semibold py-3 px-6 rounded-xl transition-all duration-300 
+           transform hover:scale-105 active:scale-95;
+  }
+
+  /* Cartes modernes et élégantes */
   .card {
-    @apply bg-gray-800 rounded-xl p-6 shadow-2xl border border-gray-700;
+    @apply bg-surface-light rounded-2xl p-6 shadow-soft border border-neutral-200/50 
+           backdrop-blur-sm transition-all duration-300 hover:shadow-medium;
   }
 
+  .card-elevated {
+    @apply bg-surface-light rounded-2xl p-8 shadow-medium border border-neutral-200/50 
+           backdrop-blur-sm transition-all duration-300 hover:shadow-strong hover:-translate-y-1;
+  }
+
+  .card-glass {
+    @apply bg-white/80 backdrop-blur-md rounded-2xl p-6 shadow-soft border border-white/20 
+           transition-all duration-300 hover:bg-white/90 hover:shadow-medium;
+  }
+
+  .card-interactive {
+    @apply bg-surface-light rounded-xl p-4 shadow-soft border border-neutral-200/50 
+           transition-all duration-300 hover:shadow-medium hover:-translate-y-1 cursor-pointer
+           hover:border-primary-300 hover:bg-primary-50/50;
+  }
+
+  /* Sections spéciales */
+  .section-hero {
+    @apply bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-6 
+           border border-primary-200/50 shadow-soft;
+  }
+
+  .section-feature {
+    @apply bg-gradient-to-br from-accent-50 to-primary-50 rounded-xl p-5 
+           border border-accent-200/50 shadow-soft;
+  }
+
+  .section-info {
+    @apply bg-gradient-to-br from-secondary-50 to-accent-50 rounded-xl p-5 
+           border border-secondary-200/50 shadow-soft;
+  }
+
+  /* Inputs et formulaires */
   .input {
-    @apply w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all;
+    @apply w-full px-4 py-3 bg-white border border-neutral-300 rounded-xl text-neutral-800 
+           placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary-500 
+           focus:border-transparent transition-all duration-300 shadow-soft;
   }
 
+  .input-error {
+    @apply border-danger-500 focus:ring-danger-500;
+  }
+
+  .input-success {
+    @apply border-primary-500 focus:ring-primary-500;
+  }
+
+  /* Badges et étiquettes */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary-100 text-primary-800 border border-primary-200;
+  }
+
+  .badge-secondary {
+    @apply bg-secondary-100 text-secondary-800 border border-secondary-200;
+  }
+
+  .badge-accent {
+    @apply bg-accent-100 text-accent-800 border border-accent-200;
+  }
+
+  .badge-danger {
+    @apply bg-danger-100 text-danger-800 border border-danger-200;
+  }
+
+  .badge-success {
+    @apply bg-primary-100 text-primary-800 border border-primary-200;
+  }
+
+  /* Timer et éléments spéciaux */
   .timer-critical {
-    @apply text-danger animate-pulse;
+    @apply text-danger-600 animate-pulse font-bold;
+  }
+
+  .timer-warning {
+    @apply text-accent-600 animate-bounce-gentle font-semibold;
+  }
+
+  .timer-normal {
+    @apply text-primary-600 font-semibold;
+  }
+
+  /* Effets de survol spéciaux */
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-strong;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-glow;
+  }
+
+  .hover-scale {
+    @apply transition-all duration-300 hover:scale-105;
+  }
+
+  /* Animations d'entrée */
+  .animate-enter {
+    @apply animate-slide-up;
+  }
+
+  .animate-enter-delay-1 {
+    @apply animate-slide-up;
+    animation-delay: 0.1s;
+  }
+
+  .animate-enter-delay-2 {
+    @apply animate-slide-up;
+    animation-delay: 0.2s;
+  }
+
+  .animate-enter-delay-3 {
+    @apply animate-slide-up;
+    animation-delay: 0.3s;
+  }
+
+  /* Effets de brillance */
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .shimmer::before {
+    content: '';
+    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Cartes de jeu spéciales */
+  .game-card {
+    @apply bg-gradient-to-br from-white to-primary-50 rounded-2xl p-6 shadow-medium 
+           border border-primary-200/50 transition-all duration-300 
+           hover:shadow-strong hover:-translate-y-1 hover:border-primary-300;
+  }
+
+  .room-card {
+    @apply bg-gradient-to-br from-surface-light to-primary-50/30 rounded-2xl p-8 
+           shadow-medium border border-primary-200/50 transition-all duration-300 
+           hover:shadow-strong hover:-translate-y-2 hover:border-primary-300;
+  }
+
+  /* Modales et overlays */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+  }
+
+  .modal-content {
+    @apply bg-surface-light rounded-2xl p-8 shadow-strong border border-neutral-200/50 
+           max-w-4xl w-full max-h-[90vh] overflow-y-auto;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-neutral-600 hover:text-primary-600 font-medium transition-colors duration-300 
+           hover:bg-primary-50 px-4 py-2 rounded-lg;
+  }
+
+  .nav-link-active {
+    @apply text-primary-600 bg-primary-100 font-semibold;
   }
 }
 
-/* Animations personnalisées */
+/* Animations personnalisées avancées */
 @keyframes slideInDown {
   from {
     opacity: 0;
     transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -59,29 +280,161 @@
   }
 }
 
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes wiggle {
+  0%, 7% {
+    transform: rotateZ(0);
+  }
+  15% {
+    transform: rotateZ(-15deg);
+  }
+  20% {
+    transform: rotateZ(10deg);
+  }
+  25% {
+    transform: rotateZ(-10deg);
+  }
+  30% {
+    transform: rotateZ(6deg);
+  }
+  35% {
+    transform: rotateZ(-4deg);
+  }
+  40%, 100% {
+    transform: rotateZ(0);
+  }
+}
+
 .animate-slideInDown {
   animation: slideInDown 0.5s ease-out;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease-in;
+.animate-slideInUp {
+  animation: slideInUp 0.5s ease-out;
 }
 
-/* Scrollbar personnalisée */
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-bounceIn {
+  animation: bounceIn 0.6s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out;
+}
+
+/* Scrollbar personnalisée moderne */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  @apply bg-neutral-100 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #10b981;
-  border-radius: 4px;
+  @apply bg-primary-400 rounded-full hover:bg-primary-500 transition-colors duration-300;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #059669;
+  @apply bg-primary-500;
 }
 
+::-webkit-scrollbar-corner {
+  @apply bg-transparent;
+}
+
+/* Amélioration de la sélection de texte */
+::selection {
+  @apply bg-primary-200 text-primary-900;
+}
+
+::-moz-selection {
+  @apply bg-primary-200 text-primary-900;
+}
+
+/* Focus visible amélioré */
+.focus-visible {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white;
+}
+
+/* Responsive design helpers */
+@media (max-width: 640px) {
+  .card {
+    @apply p-4 rounded-xl;
+  }
+  
+  .card-elevated {
+    @apply p-6 rounded-xl;
+  }
+  
+  .btn-primary, .btn-secondary, .btn-accent, .btn-danger {
+    @apply py-2 px-4 text-sm;
+  }
+}
+
+/* Dark mode support (pour l'avenir) */
+@media (prefers-color-scheme: dark) {
+  .auto-dark {
+    @apply bg-neutral-900 text-neutral-100;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .card {
+    @apply shadow-none border border-neutral-300;
+  }
+}
