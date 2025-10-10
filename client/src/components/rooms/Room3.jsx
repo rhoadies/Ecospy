@@ -323,7 +323,7 @@ export default function Room3({ onSubmit }) {
                     
                     {/* Points numérotés sur la carte */}
                     {/* 1. Amazonie (Brésil) - Amérique du Sud */}
-                    <div className="absolute" style={{ left: '25%', top: '65%' }}>
+                    <div className="absolute" style={{ left: '30%', top: '70%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">1</span>
@@ -335,7 +335,7 @@ export default function Room3({ onSubmit }) {
                     </div>
                     
                     {/* 2. Congo (Afrique centrale) */}
-                    <div className="absolute" style={{ left: '52%', top: '55%' }}>
+                    <div className="absolute" style={{ left: '52%', top: '60%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">2</span>
@@ -347,7 +347,7 @@ export default function Room3({ onSubmit }) {
                     </div>
                     
                     {/* 3. Indonésie (Asie du Sud-Est) */}
-                    <div className="absolute" style={{ left: '75%', top: '60%' }}>
+                    <div className="absolute" style={{ left: '78%', top: '65%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">3</span>
@@ -358,8 +358,8 @@ export default function Room3({ onSubmit }) {
                       </div>
                     </div>
                     
-                    {/* 4. Forêt Atlantique (Brésil) */}
-                    <div className="absolute" style={{ left: '72%', top: '65%' }}>
+                    {/* 4. Forêt Atlantique (Brésil - côte atlantique) */}
+                    <div className="absolute" style={{ left: '35%', top: '75%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">4</span>
@@ -370,8 +370,8 @@ export default function Room3({ onSubmit }) {
                       </div>
                     </div>
                     
-                    {/* 5. Taïga (Russie/Canada) */}
-                    <div className="absolute" style={{ left: '58%', top: '70%' }}>
+                    {/* 5. Taïga (Russie/Canada - hautes latitudes) */}
+                    <div className="absolute" style={{ left: '15%', top: '20%' }}>
                       <div className="relative">
                         <div className="w-6 h-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
                           <span className="text-white text-sm font-bold">5</span>
