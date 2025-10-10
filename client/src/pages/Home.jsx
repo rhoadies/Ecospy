@@ -109,7 +109,7 @@ export default function Home() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-green-400 to-primary bg-clip-text text-transparent">
+            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-blue-500 to-green-400 bg-clip-text text-transparent">
               🌍 EcoSpy
             </h1>
             <h2 className="text-3xl font-semibold text-gray-300 mb-4">
