@@ -85,7 +85,7 @@ export default function Home() {
     socket.once('room-joined', (room) => {
       setRoomCode(room.code)
       setRoom(room)
-      toast.success('Lobby public rejoint !')
+      toast.success('Salon Multijoueur rejoint !')
       navigate('/lobby')
     })
 
@@ -179,7 +179,7 @@ export default function Home() {
                 onClick={() => setMode('public')}
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 text-lg rounded-lg transition-all duration-300"
               >
-                🌐 Rejoindre un lobby public
+                🌐 Rejoindre un Salon Multijoueur
               </button>
 
               {/* Info */}
@@ -272,7 +272,7 @@ export default function Home() {
               </button>
             </div>
           ) : (
-            // Formulaire lobby public
+            // Formulaire Salon Multijoueur
             <div className="space-y-4">
               <button
                 onClick={() => setMode(null)}
@@ -281,11 +281,11 @@ export default function Home() {
                 ← Retour
               </button>
               
-              <h3 className="text-2xl font-bold mb-6">🌐 Lobby Public</h3>
+              <h3 className="text-2xl font-bold mb-6">🌐 Salon Multijoueur</h3>
               
               <div className="bg-purple-500/10 border border-purple-500 rounded-lg p-4 mb-4">
                 <p className="text-purple-300 text-sm">
-                  Rejoignez automatiquement un lobby avec d'autres joueurs en attente !
+                  Rejoignez automatiquement un salon avec d'autres joueurs en attente !
                 </p>
               </div>
 
@@ -307,12 +307,12 @@ export default function Home() {
                 disabled={!connected || !name.trim()}
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 text-lg rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Trouver un lobby
+                Trouver un salon
               </button>
 
               <div className="text-center text-sm text-gray-400">
                 <p>Vous serez mis en relation avec d'autres joueurs</p>
-                <p>ou un nouveau lobby sera créé pour vous.</p>
+                <p>ou un nouveau salon sera créé pour vous.</p>
               </div>
             </div>
           )}
