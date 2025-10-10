@@ -434,11 +434,10 @@ export default function Room3({ onSubmit }) {
                     </div>
                   </div>
                 </div>
-</div>
-</motion.div>
-</motion.div>
-)}
-</AnimatePresence>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Panneau des indices */}
