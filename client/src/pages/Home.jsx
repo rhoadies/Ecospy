@@ -118,7 +118,7 @@ export default function Home() {
             <h2 className="text-3xl font-semibold text-gray-300 mb-4">
               Mission Climat
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-400 text-lg w-full">
             Bienvenue dans "Ecospy", une mission pour sauver la planète !
 
             La Terre est en danger. Les signaux d'alarme sont partout : océans étouffés, forêts en feu, espèces en voie d'extinction...
