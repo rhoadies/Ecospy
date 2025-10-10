@@ -137,7 +137,7 @@ export default function Room1({ onSubmit }) {
       riddle: [
         'Je suis un nombre pair, multiple de 4 et inférieur à 50.',
         'La somme de mes chiffres vaut 4.',
-        'J\'ai exactement 8 diviseurs positifs.'
+        'Je termine par un zéro.'
       ],
       value: 40 
     },
@@ -310,7 +310,7 @@ export default function Room1({ onSubmit }) {
                       answer: newAnswer
                     })
                   }}
-                  placeholder="Ex: 1234"
+                  placeholder="Ex: 42"
                   className="input text-center text-2xl"
                 />
               </div>

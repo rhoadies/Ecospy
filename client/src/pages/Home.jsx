@@ -116,8 +116,15 @@ export default function Home() {
               Mission Climat
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Infiltrez la base d'une méga-corporation qui cache des données sur la pollution. 
-              4 salles, 4 énigmes, 20 minutes pour sauver la planète !
+            Bienvenue dans "Ecospy", une mission pour sauver la planète !
+
+            La Terre est en danger. Les signaux d'alarme sont partout : océans étouffés, forêts en feu, espèces en voie d'extinction...
+
+            Toi et ton équipe êtes les derniers espoirs d'un monde qui vacille. Votre mission ? Explorer, enquêter et résoudre les énigmes cachées dans chaque lieu pour restaurer l'équilibre de la planète.
+
+            Ce n’est pas qu’un jeu. C’est une prise de conscience. Chaque énigme te fera découvrir un aspect essentiel de l’environnement : les ressources, les énergies, les déchets, la biodiversité…
+
+            Saurez-vous sauver la planète avant qu’il ne soit trop tard ?
             </p>
           </motion.div>
 
