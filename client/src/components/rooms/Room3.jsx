@@ -412,29 +412,9 @@ export default function Room3({ onSubmit }) {
   </div>
   
   {/* Détails des régions */}
-  <div>
-    {regions.map((region, index) => (
-      <div
-        key={region.id}
-        className="bg-gray-700 rounded-lg p-4 border-2 border-gray-600"
-      >
-        <div className="flex items-start gap-3">
-          <div className="flex items-center justify-center w-8 h-8 bg-red-500 rounded-full text-white font-bold text-sm">
-            {index + 1}
-          </div>
-          <div className="flex-1">
-            <h4 className="text-lg font-bold text-white mb-1">{region.name}</h4>
-            <p className="text-sm text-gray-300 mb-2">{region.location}</p>
-            <div className="bg-red-500/20 border border-red-500 rounded px-2 py-1 inline-block">
-              <span className="text-red-400 text-xs font-semibold">
-                🌳 {region.hectares}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
+ 
+
+
 
   <div className="bg-blue-500/10 border border-blue-500 rounded-lg p-4">
     <p className="text-blue-400 text-sm">
