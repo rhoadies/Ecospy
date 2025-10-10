@@ -442,11 +442,10 @@ export default function Room3({ onSubmit }) {
       dans les indices partagés par votre équipe !
     </p>
   </div>
-</div>
-</motion.div>
-</motion.div>
-)}
-</AnimatePresence>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Panneau des indices */}
